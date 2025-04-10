@@ -12,7 +12,29 @@ var builder = WebApplication.CreateBuilder(args);
 // Configure Kestrel
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {
-    serverOptions.ListenLocalhost(5000); // Listen on port 5000
+    // Try ports in sequence until one works
+    var ports = new[] { 5000, 5001, 5002, 5003, 5004 };
+    var bound = false;
+    
+    foreach (var port in ports)
+    {
+        try
+        {
+            serverOptions.ListenLocalhost(port);
+            Console.WriteLine($"Server bound to port {port}");
+            bound = true;
+            break;
+        }
+        catch
+        {
+            Console.WriteLine($"Port {port} is in use, trying next port...");
+        }
+    }
+    
+    if (!bound)
+    {
+        throw new Exception("Could not find an available port to bind to.");
+    }
 });
 
 // ✅ Load Configuration explicitly
