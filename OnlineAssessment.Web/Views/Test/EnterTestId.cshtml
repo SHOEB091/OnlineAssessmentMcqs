@@ -1,0 +1,26 @@
+@{
+    ViewData["Title"] = "Enter Test ID";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">Enter Test ID</h2>
+                    
+                    <form asp-action="StartShared" asp-route-shareId="@ViewBag.ShareId" method="post">
+                        <div class="form-group mb-3">
+                            <label for="testId" class="form-label">Test ID</label>
+                            <input type="text" class="form-control" id="testId" name="testId" required>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Start Test</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

@@ -1,0 +1,57 @@
+@model List<OnlineAssessment.Web.Models.Pricing>
+@{
+    ViewData["Title"] = "Pricing Plans";
+    var isOrganization = User.IsInRole("Organization");
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Choose Your Plan</h2>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    <div class="row">
+        @foreach (var plan in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-header text-center">
+                        <h3>@plan.Name</h3>
+                        <h4 class="text-primary">$@plan.Price/month</h4>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">@plan.Description</p>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check text-success"></i> Up to @plan.MaxStudents students</li>
+                            @if (plan.IncludesMcq)
+                            {
+                                <li><i class="fas fa-check text-success"></i> MCQ Tests</li>
+                            }
+                            @if (plan.IncludesCoding)
+                            {
+                                <li><i class="fas fa-check text-success"></i> Coding Tests</li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="card-footer text-center">
+                        @if (isOrganization)
+                        {
+                            <a href="@Url.Action("Subscribe", new { pricingId = plan.Id })" class="btn btn-primary">Subscribe Now</a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Login", "Auth")" class="btn btn-outline-primary">Login to Subscribe</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div> 

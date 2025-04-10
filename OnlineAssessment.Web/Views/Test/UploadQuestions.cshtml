@@ -1,0 +1,221 @@
+@model OnlineAssessment.Web.Models.Test
+
+@{
+    ViewData["Title"] = "Upload Questions";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Upload Questions for @Model.Title</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <form id="uploadForm" enctype="multipart/form-data">
+                                <div id="dropZone" class="border border-dashed rounded p-5 text-center mb-3" style="min-height: 200px;">
+                                    <i class="fas fa-cloud-upload-alt fa-3x mb-3"></i>
+                                    <h4>Drag and drop your JSON file here</h4>
+                                    <p class="text-muted">or</p>
+                                    <input type="file" id="fileInput" name="file" class="d-none" accept=".json">
+                                    <button type="button" class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
+                                        <i class="fas fa-folder-open"></i> Browse Files
+                                    </button>
+                                </div>
+                                <input type="hidden" name="testId" value="@Model.Id">
+                                <div id="uploadStatus" class="alert d-none"></div>
+                            </form>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>JSON Format Example</h5>
+                                </div>
+                                <div class="card-body">
+                                    <pre class="bg-light p-3 rounded">
+[
+  {
+    "Text": "What is 2+2?",
+    "Type": 0,
+    "TestId": @Model.Id,
+    "AnswerOptions": [
+      {
+        "Text": "3",
+        "IsCorrect": false
+      },
+      {
+        "Text": "4",
+        "IsCorrect": true
+      }
+    ]
+  },
+  {
+    "Text": "What is the capital of France?",
+    "Type": 1,
+    "TestId": @Model.Id,
+    "TestCases": [
+      {
+        "Input": "What is the capital of France?",
+        "ExpectedOutput": "Paris"
+      }
+    ]
+  },
+  {
+    "Text": "Write a function to reverse an array",
+    "Type": 2,
+    "TestId": @Model.Id,
+    "FunctionName": "reverseArray",
+    "ReturnType": "List<Integer>",
+    "ReturnDescription": "the reversed array",
+    "Parameters": [
+      {
+        "Name": "a",
+        "Type": "List<Integer>",
+        "Description": "the array to reverse"
+      }
+    ],
+    "Constraints": [
+      "1 ≤ N ≤ 10^3",
+      "1 ≤ A[i] ≤ 10^4"
+    ],
+    "TestCases": [
+      {
+        "Input": "[1, 2, 3]",
+        "ExpectedOutput": "[3, 2, 1]"
+      }
+    ],
+    "StarterCode": {
+      "java": "public static List<Integer> reverseArray(List<Integer> a) {\n    // Write your code here\n}",
+      "python": "def reverse_array(a):\n    # Write your code here\n    pass",
+      "javascript": "function reverseArray(a) {\n    // Write your code here\n}"
+    }
+  }
+]</pre>
+                                    <div class="mt-3">
+                                        <h6>Notes:</h6>
+                                        <ul>
+                                            <li><code>Text</code>: Required, the question text (case sensitive)</li>
+                                            <li><code>Type</code>: Required, 0 for Multiple Choice, 1 for Short Answer, 2 for Coding (case sensitive)</li>
+                                            <li><code>TestId</code>: Required, must match the current test ID (case sensitive)</li>
+                                            <li><code>AnswerOptions</code>: Required for Multiple Choice questions (type: 0) (case sensitive)</li>
+                                            <li><code>TestCases</code>: Required for Short Answer (type: 1) and Coding (type: 2) questions (case sensitive)</li>
+                                            <li>For Coding questions (type: 2), additional fields are required:
+                                                <ul>
+                                                    <li><code>FunctionName</code>: Required, the name of the function to implement</li>
+                                                    <li><code>ReturnType</code>: Required, the return type of the function</li>
+                                                    <li><code>Parameters</code>: Required, list of parameters with name, type, and description</li>
+                                                    <li><code>StarterCode</code>: Required, template code for different programming languages</li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const uploadStatus = document.getElementById('uploadStatus');
+        const uploadForm = document.getElementById('uploadForm');
+
+        // Prevent default drag behaviors
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+            document.body.addEventListener(eventName, preventDefaults, false);
+        });
+
+        // Highlight drop zone when item is dragged over it
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, unhighlight, false);
+        });
+
+        // Handle dropped files
+        dropZone.addEventListener('drop', handleDrop, false);
+        fileInput.addEventListener('change', handleFiles, false);
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        function highlight(e) {
+            dropZone.classList.add('bg-light');
+        }
+
+        function unhighlight(e) {
+            dropZone.classList.remove('bg-light');
+        }
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            fileInput.files = files;
+            handleFiles({ target: { files: files } });
+        }
+
+        function handleFiles(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            if (!file.name.endsWith('.json')) {
+                showStatus('Please upload a JSON file', 'danger');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('testId', @Model.Id);
+            
+            uploadStatus.classList.remove('d-none');
+            showStatus('Uploading...', 'info');
+
+            fetch('/Test/upload-questions', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(async response => {
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(errorText || 'Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    showStatus(data.message, 'success');
+                    setTimeout(() => {
+                        window.location.href = '/Test';
+                    }, 2000);
+                } else {
+                    showStatus(data.message, 'danger');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showStatus('Error uploading file: ' + error.message, 'danger');
+            });
+        }
+
+        function showStatus(message, type) {
+            uploadStatus.textContent = message;
+            uploadStatus.className = `alert alert-${type}`;
+        }
+    </script>
+} 

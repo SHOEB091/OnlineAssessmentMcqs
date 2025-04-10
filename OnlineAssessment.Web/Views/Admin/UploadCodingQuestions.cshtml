@@ -1,0 +1,125 @@
+@{
+    ViewData["Title"] = "Upload Coding Questions";
+}
+
+<div class="container mt-4">
+    <h2>Upload Coding Questions</h2>
+    <div class="card">
+        <div class="card-body">
+            <form id="uploadForm" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="testId">Test ID</label>
+                    <input type="number" class="form-control" id="testId" name="testId" required>
+                </div>
+                <div class="form-group">
+                    <label for="file">JSON File</label>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="file" name="file" accept=".json" required>
+                        <label class="custom-file-label" for="file">Choose file</label>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Upload</button>
+            </form>
+            <div id="alert" class="alert mt-3" style="display: none;"></div>
+        </div>
+    </div>
+
+    <div class="card mt-4">
+        <div class="card-header">
+            <h5 class="mb-0">Example JSON Format</h5>
+        </div>
+        <div class="card-body">
+            <pre class="bg-light p-3 rounded"><code>[
+  {
+    "text": "Write a function to calculate the factorial of a number",
+    "type": "Coding",
+    "testId": 1,
+    "functionName": "factorial",
+    "returnType": "int",
+    "returnDescription": "The factorial of the input number",
+    "parameters": [
+      {
+        "name": "n",
+        "type": "int",
+        "description": "The number to calculate factorial for"
+      }
+    ],
+    "constraints": [
+      "0 <= n <= 12",
+      "The function should handle edge cases"
+    ],
+    "testCases": [
+      {
+        "input": "5",
+        "expectedOutput": "120"
+      },
+      {
+        "input": "0",
+        "expectedOutput": "1"
+      }
+    ],
+    "starterCode": "public int factorial(int n) {\n    // Write your code here\n}"
+  }
+]</code></pre>
+            <div class="mt-3">
+                <h6>Notes:</h6>
+                <ul>
+                    <li>The file must be in JSON format</li>
+                    <li>Each question must have a text and type</li>
+                    <li>Coding questions require:
+                        <ul>
+                            <li>Function name</li>
+                            <li>Return type</li>
+                            <li>Parameters with name, type, and description</li>
+                            <li>At least one test case</li>
+                            <li>Optional constraints and starter code</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Update file input label when file is selected
+            $('.custom-file-input').on('change', function() {
+                var fileName = $(this).val().split('\\').pop();
+                $(this).next('.custom-file-label').html(fileName);
+            });
+
+            // Handle form submission
+            $('#uploadForm').on('submit', function(e) {
+                e.preventDefault();
+                
+                var formData = new FormData();
+                formData.append('file', $('#file')[0].files[0]);
+                formData.append('testId', $('#testId').val());
+
+                $.ajax({
+                    url: '/api/questions/upload-file',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        var alert = $('#alert');
+                        alert.removeClass('alert-danger').addClass('alert-success');
+                        alert.html('Questions uploaded successfully! ' + response.count + ' questions were added.');
+                        alert.show();
+                        $('#uploadForm')[0].reset();
+                        $('.custom-file-label').html('Choose file');
+                    },
+                    error: function(xhr) {
+                        var alert = $('#alert');
+                        alert.removeClass('alert-success').addClass('alert-danger');
+                        alert.html('Error: ' + (xhr.responseJSON?.message || 'Unknown error occurred'));
+                        alert.show();
+                    }
+                });
+            });
+        });
+    </script>
+} 

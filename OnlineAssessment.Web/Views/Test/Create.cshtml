@@ -1,0 +1,330 @@
+@model OnlineAssessment.Web.Models.Test
+
+@{
+    ViewData["Title"] = "Create Test";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0"><i class="fas fa-plus-circle me-2"></i>Create New Test</h3>
+                </div>
+                <div class="card-body">
+                    <form id="createTestForm" class="needs-validation" novalidate>
+                        <div class="form-group mb-4">
+                            <label for="title" class="form-label fw-bold">Test Title</label>
+                            <input type="text" class="form-control form-control-lg" id="title" name="title" required 
+                                placeholder="Enter a descriptive title for your test">
+                            <div class="invalid-feedback">Please provide a test title.</div>
+                        </div>
+                        
+                        <div class="form-group mb-4">
+                            <label for="description" class="form-label fw-bold">Description</label>
+                            <textarea class="form-control" id="description" name="description" rows="4" 
+                                placeholder="Provide a detailed description of the test"></textarea>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-4">
+                                    <label for="duration" class="form-label fw-bold">Duration (minutes)</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="duration" name="durationMinutes" 
+                                            min="1" max="1440" required>
+                                        <span class="input-group-text">min</span>
+                                    </div>
+                                    <div class="invalid-feedback">Duration must be between 1 and 1440 minutes.</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-group mb-4">
+                                    <label for="maxStudents" class="form-label fw-bold">Maximum Students</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="maxStudents" name="maxStudents" 
+                                            min="1" value="100" required>
+                                        <span class="input-group-text">students</span>
+                                    </div>
+                                    <small class="form-text text-muted">Maximum number of students that can take this test</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label for="maxAttempts" class="form-label fw-bold">Attempts per Student</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="maxAttempts" name="maxAttempts" 
+                                    min="1" value="1" required>
+                                <span class="input-group-text">attempts</span>
+                            </div>
+                            <small class="form-text text-muted">Number of times each student can attempt this test</small>
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label for="testType" class="form-label fw-bold">Test Type</label>
+                            <select class="form-select" id="testType" name="type" required>
+                                @if (ViewBag.CanCreateMcq ?? false)
+                                {
+                                    <option value="0">Multiple Choice Questions</option>
+                                }
+                                @if (ViewBag.CanCreateCoding ?? false)
+                                {
+                                    <option value="1">Coding Test</option>
+                                }
+                            </select>
+                            <div class="invalid-feedback">Please select a test type.</div>
+                        </div>
+
+                        <div id="questionSection" class="mb-4" style="display: none;">
+                            <div class="card">
+                                <div class="card-header bg-light">
+                                    <h5 class="mb-0">Add Questions</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div id="mcqQuestions" style="display: none;">
+                                        <div class="mb-3">
+                                            <label class="form-label fw-bold">Upload MCQ Questions</label>
+                                            <div class="input-group">
+                                                <input type="file" class="form-control" id="mcqFile" accept=".json">
+                                                <button class="btn btn-outline-primary" type="button" onclick="uploadMcqQuestions()">
+                                                    <i class="fas fa-upload me-2"></i>Upload MCQ
+                                                </button>
+                                            </div>
+                                            <small class="form-text text-muted">Upload a JSON file containing MCQ questions</small>
+                                            <div id="mcqUploadStatus" class="alert mt-2 d-none"></div>
+                                        </div>
+                                    </div>
+
+                                    <div id="codingQuestions" style="display: none;">
+                                        <div class="mb-3">
+                                            <label class="form-label fw-bold">Upload Coding Questions</label>
+                                            <div class="input-group">
+                                                <input type="file" class="form-control" id="codingFile" accept=".json">
+                                                <button class="btn btn-outline-primary" type="button" onclick="uploadCodingQuestions()">
+                                                    <i class="fas fa-upload me-2"></i>Upload Coding
+                                                </button>
+                                            </div>
+                                            <small class="form-text text-muted">Upload a JSON file containing coding questions</small>
+                                            <div id="codingUploadStatus" class="alert mt-2 d-none"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-save me-2"></i>Create Test
+                            </button>
+                            <a href="/Test" class="btn btn-outline-secondary">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        let createdTestId = null;
+
+        // Show/hide question sections based on test type
+        document.getElementById('testType').addEventListener('change', function() {
+            const type = parseInt(this.value);
+            const questionSection = document.getElementById('questionSection');
+            const mcqQuestions = document.getElementById('mcqQuestions');
+            const codingQuestions = document.getElementById('codingQuestions');
+
+            questionSection.style.display = 'block';
+            mcqQuestions.style.display = type === 0 ? 'block' : 'none';
+            codingQuestions.style.display = type === 1 ? 'block' : 'none';
+        });
+
+        // Form validation
+        (function () {
+            'use strict'
+            var forms = document.querySelectorAll('.needs-validation')
+            Array.prototype.slice.call(forms).forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+
+        // Handle form submission
+        document.getElementById('createTestForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            try {
+                // Get the form values
+                const title = document.getElementById('title').value.trim();
+                const description = document.getElementById('description').value.trim();
+                const durationMinutes = parseInt(document.getElementById('duration').value);
+                const maxStudents = parseInt(document.getElementById('maxStudents').value);
+                const maxAttempts = parseInt(document.getElementById('maxAttempts').value);
+                const type = parseInt(document.getElementById('testType').value);
+                
+                // Validate form values
+                if (!title) {
+                    throw new Error('Test title is required');
+                }
+                if (isNaN(durationMinutes) || durationMinutes <= 0 || durationMinutes > 1440) {
+                    throw new Error('Duration must be between 1 and 1440 minutes');
+                }
+                if (isNaN(maxStudents) || maxStudents < 1) {
+                    throw new Error('Maximum number of students must be at least 1');
+                }
+                if (isNaN(maxAttempts) || maxAttempts < 1) {
+                    throw new Error('Maximum number of attempts must be at least 1');
+                }
+                if (isNaN(type)) {
+                    throw new Error('Invalid test type');
+                }
+                
+                // Create the test object
+                const test = {
+                    Title: title,
+                    Description: description,
+                    DurationMinutes: durationMinutes,
+                    MaxStudents: maxStudents,
+                    MaxAttempts: maxAttempts,
+                    Type: type
+                };
+                
+                console.log('Sending test data:', test);
+
+                const response = await fetch('/api/TestApi/create', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(test)
+                });
+                
+                const result = await response.json();
+                console.log('Server response:', result);
+                
+                if (!response.ok) {
+                    throw new Error(result.message || 'Server error: ' + response.status);
+                }
+
+                createdTestId = result.test.id;
+                showToast('Test created successfully! You can now upload questions.', 'success');
+                
+                // Show the question section after test creation
+                const questionSection = document.getElementById('questionSection');
+                const mcqQuestions = document.getElementById('mcqQuestions');
+                const codingQuestions = document.getElementById('codingQuestions');
+
+                questionSection.style.display = 'block';
+                mcqQuestions.style.display = type === 0 ? 'block' : 'none';
+                codingQuestions.style.display = type === 1 ? 'block' : 'none';
+
+            } catch (error) {
+                console.error('Error:', error);
+                showToast('Error creating test: ' + error.message, 'error');
+            }
+        });
+
+        // Upload MCQ questions
+        async function uploadMcqQuestions() {
+            if (!createdTestId) {
+                showToast('Please create the test first', 'warning');
+                return;
+            }
+
+            const fileInput = document.getElementById('mcqFile');
+            const file = fileInput.files[0];
+            const statusElement = document.getElementById('mcqUploadStatus');
+            
+            if (!file) {
+                showStatus(statusElement, 'Please select a file to upload', 'warning');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('testId', createdTestId);
+
+            try {
+                showStatus(statusElement, 'Uploading MCQ questions...', 'info');
+                
+                const response = await fetch('/Test/upload-questions', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(result.message || 'Server error: ' + response.status);
+                }
+
+                showStatus(statusElement, 'MCQ questions uploaded successfully!', 'success');
+                fileInput.value = ''; // Clear the file input
+            } catch (error) {
+                console.error('Error:', error);
+                showStatus(statusElement, 'Error uploading MCQ questions: ' + error.message, 'danger');
+            }
+        }
+
+        // Upload Coding questions
+        async function uploadCodingQuestions() {
+            if (!createdTestId) {
+                alert('Please create the test first');
+                return;
+            }
+
+            const fileInput = document.getElementById('codingFile');
+            const file = fileInput.files[0];
+            const statusElement = document.getElementById('codingUploadStatus');
+            
+            if (!file) {
+                showStatus(statusElement, 'Please select a file to upload', 'warning');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('testId', createdTestId);
+
+            try {
+                showStatus(statusElement, 'Uploading coding questions...', 'info');
+                
+                const response = await fetch('/Test/upload-coding-questions', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(result.message || 'Server error: ' + response.status);
+                }
+
+                showStatus(statusElement, 'Coding questions uploaded successfully!', 'success');
+                fileInput.value = ''; // Clear the file input
+            } catch (error) {
+                console.error('Error:', error);
+                showStatus(statusElement, 'Error uploading coding questions: ' + error.message, 'danger');
+            }
+        }
+
+        // Helper function to show status messages
+        function showStatus(element, message, type) {
+            element.textContent = message;
+            element.className = `alert alert-${type} mt-2`;
+            element.classList.remove('d-none');
+        }
+    </script>
+} 

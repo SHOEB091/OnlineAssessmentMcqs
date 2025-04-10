@@ -1,0 +1,43 @@
+@model OnlineAssessment.Web.Models.Test
+
+@{
+    ViewData["Title"] = "Share Test";
+}
+
+<div class="container mt-4">
+    <h2>Share Test: @Model.Title</h2>
+    
+    <div class="card mt-4">
+        <div class="card-body">
+            <h5 class="card-title">Share Link</h5>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" value="@ViewBag.ShareUrl" id="shareUrl" readonly>
+                <button class="btn btn-outline-secondary" type="button" onclick="copyShareUrl()">Copy</button>
+            </div>
+            <p class="text-muted">Share this link with students to allow them to access the test.</p>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a href="@Url.Action("Index")" class="btn btn-secondary">Back to Tests</a>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function copyShareUrl() {
+            var copyText = document.getElementById("shareUrl");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+            document.execCommand("copy");
+            
+            // Show feedback
+            var button = document.querySelector('button[onclick="copyShareUrl()"]');
+            var originalText = button.textContent;
+            button.textContent = "Copied!";
+            setTimeout(function() {
+                button.textContent = originalText;
+            }, 2000);
+        }
+    </script>
+} 

@@ -1,0 +1,42 @@
+@model OnlineAssessment.Web.Models.OrganizationSubscription
+@{
+    ViewData["Title"] = "My Subscription";
+}
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <h2>Current Subscription</h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>Plan Details</h4>
+                    <p><strong>Plan Name:</strong> @Model.Pricing.Name</p>
+                    <p><strong>Price:</strong> $@Model.Pricing.Price/month</p>
+                    <p><strong>Features:</strong></p>
+                    <ul>
+                        @if (Model.Pricing.IncludesMcq)
+                        {
+                            <li>MCQ Tests</li>
+                        }
+                        @if (Model.Pricing.IncludesCoding)
+                        {
+                            <li>Coding Tests</li>
+                        }
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h4>Subscription Status</h4>
+                    <p><strong>Status:</strong> @(Model.IsActive ? "Active" : "Inactive")</p>
+                    <p><strong>Start Date:</strong> @Model.StartDate.ToString("MM/dd/yyyy")</p>
+                    <p><strong>End Date:</strong> @Model.EndDate.ToString("MM/dd/yyyy")</p>
+                    <p><strong>Students:</strong> @Model.CurrentStudentCount / @Model.Pricing.MaxStudents</p>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <a href="@Url.Action("Index")" class="btn btn-primary">View All Plans</a>
+        </div>
+    </div>
+</div> 

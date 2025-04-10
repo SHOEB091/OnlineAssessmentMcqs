@@ -1,0 +1,8 @@
+# Navigate to the Online_Assessment directory where the Dockerfile is located
+cd Online_Assessment
+
+# Build the container
+docker build -t online-assessment .
+
+# Run the container
+docker run -d -p 8080:8080 -p 8081:8081 --name online-assessment online-assessment

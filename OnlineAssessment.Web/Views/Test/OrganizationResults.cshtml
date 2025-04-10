@@ -1,0 +1,94 @@
+@model IEnumerable<OnlineAssessment.Web.Models.TestResult>
+
+@{
+    ViewData["Title"] = "Organization Test Results";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h2 class="mb-0">Test Results</h2>
+                    <a href="/Test/Index" class="btn btn-light">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Tests
+                    </a>
+                </div>
+                <div class="card-body">
+                    @if (!Model.Any())
+                    {
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>No test results available yet.
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Test Title</th>
+                                        <th>Candidate</th>
+                                        <th>Date Taken</th>
+                                        <th>Score</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var result in Model)
+                                    {
+                                        <tr>
+                                            <td>@result.Test.Title</td>
+                                            <td>@result.Username</td>
+                                            <td>@result.SubmittedAt.ToString("g")</td>
+                                            <td>
+                                                <span class="badge @(result.Score >= 70 ? "bg-success" : "bg-danger")">
+                                                    @result.Score.ToString("0")%
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="badge @(result.Score >= 70 ? "bg-success" : "bg-danger")">
+                                                    @(result.Score >= 70 ? "PASSED" : "FAILED")
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <a href="/Test/Result/@result.Id" class="btn btn-sm btn-info">
+                                                    <i class="fas fa-eye"></i> View Details
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .badge {
+        font-size: 0.9em;
+        padding: 0.5em 0.8em;
+    }
+    
+    .table td {
+        vertical-align: middle;
+    }
+    
+    .btn-sm {
+        padding: 0.25rem 0.5rem;
+    }
+
+    .card {
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 15px;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: rgba(0, 0, 0, 0.02);
+    }
+</style> 

@@ -1,0 +1,213 @@
+@model OnlineAssessment.Web.Models.Test
+
+@{
+    ViewData["Title"] = "Upload Coding Questions";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Upload Coding Questions for @Model.Title</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <form id="uploadForm" enctype="multipart/form-data">
+                                <div id="dropZone" class="border border-dashed rounded p-5 text-center mb-3" style="min-height: 200px;">
+                                    <i class="fas fa-cloud-upload-alt fa-3x mb-3"></i>
+                                    <h4>Drag and drop your JSON file here</h4>
+                                    <p class="text-muted">or</p>
+                                    <input type="file" id="fileInput" name="file" class="d-none" accept=".json">
+                                    <button type="button" class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
+                                        <i class="fas fa-folder-open"></i> Browse Files
+                                    </button>
+                                </div>
+                                <input type="hidden" name="testId" value="@Model.Id">
+                                <div id="uploadStatus" class="alert d-none"></div>
+                            </form>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>JSON Format Example</h5>
+                                </div>
+                                <div class="card-body">
+                                    <pre class="bg-light p-3 rounded">
+{
+  "codingQuestions": [
+    {
+      "text": "Write a function to add two numbers",
+      "type": 2,
+      "testId": @Model.Id,
+      "functionName": "addNumbers",
+      "parameters": [
+        {
+          "name": "a",
+          "type": "int",
+          "description": "first number"
+        },
+        {
+          "name": "b",
+          "type": "int",
+          "description": "second number"
+        }
+      ],
+      "returnType": "int",
+      "returnDescription": "sum of the two numbers",
+      "constraints": [
+        "-1000 ≤ a, b ≤ 1000"
+      ],
+      "testCases": [
+        {
+          "input": "2, 3",
+          "expectedOutput": "5",
+          "explanation": "2 + 3 = 5"
+        },
+        {
+          "input": "-10, 7",
+          "expectedOutput": "-3",
+          "explanation": "-10 + 7 = -3"
+        }
+      ],
+      "starterCode": {
+        "java": "public static int addNumbers(int a, int b) {\n    // Write your code here\n}",
+        "python": "def add_numbers(a, b):\n    # Write your code here\n    pass",
+        "javascript": "function addNumbers(a, b) {\n    // Write your code here\n}"
+      }
+    }
+  ]
+}</pre>
+                                    <div class="mt-3">
+                                        <h6>Notes:</h6>
+                                        <ul>
+                                            <li><code>text</code>: Required, the coding question text (case sensitive)</li>
+                                            <li><code>type</code>: Must be 2 for Coding questions (case sensitive)</li>
+                                            <li><code>testId</code>: Required, must match the current test ID (case sensitive)</li>
+                                            <li><code>functionName</code>: Required, the name of the function to implement</li>
+                                            <li><code>parameters</code>: Required, list of parameters with name, type, and description</li>
+                                            <li><code>returnType</code>: Required, the return type of the function</li>
+                                            <li><code>returnDescription</code>: Optional, description of the return value</li>
+                                            <li><code>constraints</code>: Optional, list of constraints for the problem</li>
+                                            <li><code>testCases</code>: Required, at least one test case with input, expectedOutput, and optional explanation</li>
+                                            <li><code>starterCode</code>: Required, template code for different programming languages</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const uploadStatus = document.getElementById('uploadStatus');
+        const uploadForm = document.getElementById('uploadForm');
+
+        // Prevent default drag behaviors
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+            document.body.addEventListener(eventName, preventDefaults, false);
+        });
+
+        // Highlight drop zone when item is dragged over it
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, unhighlight, false);
+        });
+
+        // Handle dropped files
+        dropZone.addEventListener('drop', handleDrop, false);
+        fileInput.addEventListener('change', handleFiles, false);
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        function highlight(e) {
+            dropZone.classList.add('bg-light');
+        }
+
+        function unhighlight(e) {
+            dropZone.classList.remove('bg-light');
+        }
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            fileInput.files = files;
+            handleFiles({ target: { files: files } });
+        }
+
+        function handleFiles(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            if (!file.name.endsWith('.json')) {
+                showStatus('Please upload a JSON file', 'danger');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('testId', @Model.Id);
+            
+            uploadStatus.classList.remove('d-none');
+            showStatus('Uploading...', 'info');
+
+            fetch('/Test/upload-coding-questions', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(async response => {
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Server error:', errorText);
+                    try {
+                        // Try to parse the error as JSON
+                        const errorJson = JSON.parse(errorText);
+                        throw new Error(errorJson.message || 'Server error');
+                    } catch (e) {
+                        // If parsing fails, use the raw text
+                        throw new Error(errorText || 'Network response was not ok');
+                    }
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    showStatus(data.message, 'success');
+                    setTimeout(() => {
+                        window.location.href = '/Test';
+                    }, 2000);
+                } else {
+                    showStatus(data.message, 'danger');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                console.error('Error details:', error.stack);
+                showStatus('Error uploading file: ' + error.message, 'danger');
+            });
+        }
+
+        function showStatus(message, type) {
+            uploadStatus.textContent = message;
+            uploadStatus.className = `alert alert-${type}`;
+        }
+    </script>
+} 
