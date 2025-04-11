@@ -5,164 +5,312 @@
 
 @section Styles {
     <style>
-        .hero-section {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            padding: 2rem 0;
-            margin-bottom: 2rem;
-            border-radius: 0.5rem;
+        .test-details-container {
+            max-width: 800px;
+            margin: 1rem auto;
+            padding: 0 1rem;
+            min-height: calc(100vh - 2rem);
+            display: flex;
+            flex-direction: column;
         }
-        
-        .card {
-            transition: transform 0.2s;
-            border-radius: 0.5rem;
-            border: none;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+        .test-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
         }
-        
-        .card:hover {
-            transform: translateY(-5px);
+
+        .test-header h2 {
+            color: #1e293b;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        
-        .card-header {
-            background: linear-gradient(135deg, #3498db, #2980b9);
-            color: white;
-            border-top-left-radius: 0.5rem;
-            border-top-right-radius: 0.5rem;
-            padding: 1rem 1.5rem;
+
+        .test-header p {
+            color: #64748b;
+            font-size: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
         }
-        
-        .badge {
-            font-size: 0.9em;
-            padding: 0.5em 0.8em;
-            border-radius: 0.25rem;
+
+        .test-card {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(226, 232, 240, 0.5);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
-        
-        .btn-primary {
-            background-color: #3498db;
-            border: none;
-            border-radius: 0.25rem;
-            box-shadow: 0 4px 6px rgba(52, 152, 219, 0.3);
-            padding: 0.75rem 2rem;
+
+        .test-card h3 {
+            color: #1e293b;
+            font-size: 1.25rem;
             font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
-        
-        .btn-primary:hover {
-            background-color: #2980b9;
-            box-shadow: 0 6px 8px rgba(52, 152, 219, 0.4);
-            transform: translateY(-2px);
+
+        .test-card h3 i {
+            color: #3b82f6;
         }
-        
-        .btn-light {
-            background-color: white;
-            color: #3498db;
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .info-card {
+            background: #f8fafc;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .info-card h4 {
+            color: #1e293b;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-card h4 i {
+            color: #3b82f6;
+        }
+
+        .info-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .info-list li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0;
+            color: #64748b;
+            font-size: 0.875rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .info-list li:last-child {
+            border-bottom: none;
+        }
+
+        .info-list li i {
+            color: #3b82f6;
+            font-size: 1rem;
+        }
+
+        .test-type-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            font-size: 0.75rem;
+            background: #e0f2fe;
+            color: #0369a1;
+        }
+
+        .test-type-badge i {
+            font-size: 0.875rem;
+        }
+
+        .warning-card {
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .warning-card h4 {
+            color: #c2410c;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .warning-card h4 i {
+            color: #c2410c;
+        }
+
+        .warning-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .warning-list li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0;
+            color: #7c2d12;
+            font-size: 0.875rem;
+            border-bottom: 1px solid #fed7aa;
+        }
+
+        .warning-list li:last-child {
+            border-bottom: none;
+        }
+
+        .warning-list li i {
+            color: #c2410c;
+            font-size: 1rem;
+        }
+
+        .start-button {
+            width: 100%;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
             border: none;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(59 130 246 / 0.2);
+            text-decoration: none;
+            font-size: 0.875rem;
+            margin-top: auto;
         }
-        
-        .btn-light:hover {
-            background-color: #f8f9fa;
-            color: #2980b9;
+
+        .start-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 8px -1px rgb(59 130 246 / 0.3);
         }
-        
-        .alert {
-            border-radius: 0.25rem;
-            border: none;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
-        
-        .text-primary {
-            color: #3498db !important;
-        }
-        
-        .bg-light {
-            background-color: #f8f9fa !important;
+
+        @@media (max-width: 768px) {
+            .test-details-container {
+                margin: 0.5rem auto;
+            }
+
+            .test-header h2 {
+                font-size: 1.75rem;
+            }
+
+            .test-header p {
+                font-size: 0.875rem;
+            }
+
+            .test-card {
+                padding: 1rem;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 }
 
-<div class="hero-section">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-8 text-center">
-                <h2 class="mb-3">@Model.Title</h2>
-                <p class="lead">@Model.Description</p>
-            </div>
-        </div>
+<div class="test-details-container">
+    <div class="test-header">
+        <h2>@Model.Title</h2>
+        <p>@Model.Description</p>
     </div>
-</div>
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <div class="card shadow-sm">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h3 class="mb-0"><i class="fas fa-info-circle me-2"></i>Test Details</h3>
-                    <a href="/Test/Index" class="btn btn-light btn-sm">
-                        <i class="fas fa-arrow-left me-1"></i> Back to Tests
-                    </a>
-                </div>
-                <div class="card-body">
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <div class="card h-100 border-0 bg-light">
-                                <div class="card-body">
-                                    <h5 class="text-primary mb-3">Test Information</h5>
-                                    <dl class="row mb-0">
-                                        <dt class="col-sm-4">Duration</dt>
-                                        <dd class="col-sm-8">@Model.DurationMinutes minutes</dd>
+    <div class="test-card">
+        <h3>
+            <i class="fas fa-info-circle"></i>
+            Test Information
+        </h3>
 
-                                        <dt class="col-sm-4">Type</dt>
-                                        <dd class="col-sm-8">
-                                            <span class="badge bg-@(Model.Type == TestType.MultipleChoice ? "primary" : "success")">
-                                                @(Model.Type == TestType.MultipleChoice ? "Multiple Choice" : "Coding")
-                                            </span>
-                                        </dd>
+        <div class="info-grid">
+            <div class="info-card">
+                <h4>
+                    <i class="fas fa-clock"></i>
+                    Test Details
+                </h4>
+                <ul class="info-list">
+                    <li>
+                        <i class="fas fa-hourglass-half"></i>
+                        Duration: @Model.DurationMinutes minutes
+                    </li>
+                    <li>
+                        <i class="fas fa-question-circle"></i>
+                        Total Questions: @Model.Questions.Count
+                    </li>
+                    <li>
+                        <i class="fas fa-tag"></i>
+                        Type: 
+                        <span class="test-type-badge">
+                            <i class="fas fa-@(Model.Type == TestType.MultipleChoice ? "list-ul" : "code")"></i>
+                            @(Model.Type == TestType.MultipleChoice ? "Multiple Choice" : "Coding")
+                        </span>
+                    </li>
+                </ul>
+            </div>
 
-                                        <dt class="col-sm-4">Questions</dt>
-                                        <dd class="col-sm-8">@Model.Questions.Count</dd>
-                                    </dl>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card h-100 border-0 bg-light">
-                                <div class="card-body">
-                                    <h5 class="text-primary mb-3">Important Notes</h5>
-                                    <ul class="list-unstyled mb-0">
-                                        <li class="mb-2">
-                                            <i class="fas fa-clock text-warning me-2"></i>
-                                            The test has a time limit of @Model.DurationMinutes minutes
-                                        </li>
-                                        <li class="mb-2">
-                                            <i class="fas fa-exclamation-triangle text-danger me-2"></i>
-                                            Do not refresh or close the browser during the test
-                                        </li>
-                                        <li class="mb-2">
-                                            <i class="fas fa-info-circle text-info me-2"></i>
-                                            Make sure you have a stable internet connection
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-check-circle text-success me-2"></i>
-                                            Read each question carefully before answering
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="alert alert-info">
-                        <i class="fas fa-info-circle me-2"></i>
-                        Once you start the test, the timer will begin and cannot be paused.
-                    </div>
-
-                    <div class="text-center mt-4">
-                        <a href="/Test/Take/@Model.Id" class="btn btn-primary btn-lg">
-                            <i class="fas fa-play me-2"></i>Start Test
-                        </a>
-                    </div>
-                </div>
+            <div class="info-card">
+                <h4>
+                    <i class="fas fa-exclamation-circle"></i>
+                    Important Notes
+                </h4>
+                <ul class="info-list">
+                    <li>
+                        <i class="fas fa-clock"></i>
+                        The test has a time limit of @Model.DurationMinutes minutes
+                    </li>
+                    <li>
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Do not refresh or close the browser during the test
+                    </li>
+                    <li>
+                        <i class="fas fa-wifi"></i>
+                        Ensure you have a stable internet connection
+                    </li>
+                </ul>
             </div>
         </div>
+
+        <div class="warning-card">
+            <h4>
+                <i class="fas fa-exclamation-triangle"></i>
+                Important Warning
+            </h4>
+            <ul class="warning-list">
+                <li>
+                    <i class="fas fa-clock"></i>
+                    Once you start the test, the timer will begin and cannot be paused
+                </li>
+                <li>
+                    <i class="fas fa-save"></i>
+                    Your progress will be automatically saved
+                </li>
+                <li>
+                    <i class="fas fa-lock"></i>
+                    You cannot return to previous questions after submission
+                </li>
+            </ul>
+        </div>
+
+        <a href="/Test/Take/@Model.Id" class="start-button">
+            <i class="fas fa-play"></i>
+            Start Test
+        </a>
     </div>
 </div> 

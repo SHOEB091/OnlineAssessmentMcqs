@@ -361,13 +361,14 @@ namespace OnlineAssessment.Web.Controllers
 
                 // Check if user has already submitted this test
                 var username = User.Identity?.Name ?? "Anonymous";
-                var existingSubmission = await _context.TestResults
-                    .FirstOrDefaultAsync(r => r.TestId == id && r.Username == username);
+                var existingSubmissions = await _context.TestResults
+                    .Where(r => r.TestId == id && r.Username == username)
+                    .CountAsync();
                 
-                if (existingSubmission != null)
+                if (existingSubmissions >= test.MaxAttempts)
                 {
-                    _logger.LogWarning($"User {username} attempted to submit test {id} multiple times");
-                    return BadRequest(new { success = false, message = "You have already submitted this test" });
+                    _logger.LogWarning($"User {username} attempted to submit test {id} more than {test.MaxAttempts} times");
+                    return BadRequest(new { success = false, message = $"You have already used all {test.MaxAttempts} attempts for this test" });
                 }
 
                 int mcqCorrect = 0;
@@ -1039,7 +1040,8 @@ namespace OnlineAssessment.Web.Controllers
                     DurationMinutes = testDto.DurationMinutes,
                     Type = testDto.Type,
                     CreatedAt = DateTime.UtcNow,
-                    CreatedBy = userRole == "Organization" && userId != null ? int.Parse(userId) : null
+                    CreatedBy = userRole == "Organization" && userId != null ? int.Parse(userId) : null,
+                    MaxAttempts = testDto.MaxAttempts
                 };
 
                 _context.Tests.Add(test);

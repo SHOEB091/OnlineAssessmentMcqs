@@ -15,6 +15,10 @@ namespace OnlineAssessment.Web.Models
         
         [Required]
         public TestType Type { get; set; }
+
+        [Required]
+        [Range(1, int.MaxValue)]
+        public int MaxAttempts { get; set; } = 1;
         
         public List<QuestionDto> Questions { get; set; } = new();
     }

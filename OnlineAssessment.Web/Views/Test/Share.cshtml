@@ -4,22 +4,210 @@
     ViewData["Title"] = "Share Test";
 }
 
-<div class="container mt-4">
-    <h2>Share Test: @Model.Title</h2>
-    
-    <div class="card mt-4">
-        <div class="card-body">
-            <h5 class="card-title">Share Link</h5>
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" value="@ViewBag.ShareUrl" id="shareUrl" readonly>
-                <button class="btn btn-outline-secondary" type="button" onclick="copyShareUrl()">Copy</button>
-            </div>
-            <p class="text-muted">Share this link with students to allow them to access the test.</p>
-        </div>
+@section Styles {
+    <style>
+        .share-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .share-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .share-header h2 {
+            color: #1e293b;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .share-header p {
+            color: #64748b;
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .share-card {
+            background: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(226, 232, 240, 0.5);
+        }
+
+        .share-card h3 {
+            color: #1e293b;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .share-card h3 i {
+            color: #3b82f6;
+        }
+
+        .share-input-group {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .share-input {
+            flex: 1;
+            padding: 1rem 1.25rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 1rem;
+            font-size: 1.1rem;
+            color: #1e293b;
+            background-color: #f8fafc;
+            transition: all 0.2s;
+        }
+
+        .share-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+        }
+
+        .copy-button {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+            border: none;
+            border-radius: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(59 130 246 / 0.2);
+        }
+
+        .copy-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 8px -1px rgb(59 130 246 / 0.3);
+        }
+
+        .copy-button.copied {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+        }
+
+        .share-info {
+            color: #64748b;
+            font-size: 1rem;
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem;
+            background-color: #f8fafc;
+            border-radius: 0.75rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .share-info i {
+            color: #3b82f6;
+            font-size: 1.25rem;
+        }
+
+        .share-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .back-button {
+            padding: 1rem 2rem;
+            background-color: #f1f5f9;
+            color: #1e293b;
+            border: none;
+            border-radius: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+
+        .back-button:hover {
+            background-color: #e2e8f0;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 8px -1px rgb(0 0 0 / 0.15);
+        }
+
+        @@media (max-width: 768px) {
+            .share-container {
+                margin: 1.5rem auto;
+            }
+
+            .share-header h2 {
+                font-size: 2rem;
+            }
+
+            .share-header p {
+                font-size: 1.1rem;
+            }
+
+            .share-card {
+                padding: 1.5rem;
+            }
+
+            .share-input-group {
+                flex-direction: column;
+            }
+
+            .copy-button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+}
+
+<div class="share-container">
+    <div class="share-header">
+        <h2>Share Test: @Model.Title</h2>
+        <p>Share this test with your students using the link below</p>
     </div>
 
-    <div class="mt-4">
-        <a href="@Url.Action("Index")" class="btn btn-secondary">Back to Tests</a>
+    <div class="share-card">
+        <h3>
+            <i class="fas fa-link"></i>
+            Share Link
+        </h3>
+        <div class="share-input-group">
+            <input type="text" class="share-input" value="@ViewBag.ShareUrl" id="shareUrl" readonly>
+            <button class="copy-button" onclick="copyShareUrl()">
+                <i class="fas fa-copy"></i>
+                Copy Link
+            </button>
+        </div>
+        <p class="share-info">
+            <i class="fas fa-info-circle"></i>
+            Share this link with students to allow them to access the test.
+        </p>
+    </div>
+
+    <div class="share-actions">
+        <a href="@Url.Action("Index")" class="back-button">
+            <i class="fas fa-arrow-left"></i>
+            Back to Tests
+        </a>
     </div>
 </div>
 
@@ -32,11 +220,13 @@
             document.execCommand("copy");
             
             // Show feedback
-            var button = document.querySelector('button[onclick="copyShareUrl()"]');
-            var originalText = button.textContent;
-            button.textContent = "Copied!";
+            var button = document.querySelector('.copy-button');
+            button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+            button.classList.add('copied');
+            
             setTimeout(function() {
-                button.textContent = originalText;
+                button.innerHTML = '<i class="fas fa-copy"></i> Copy Link';
+                button.classList.remove('copied');
             }, 2000);
         }
     </script>

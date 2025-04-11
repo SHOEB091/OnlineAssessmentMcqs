@@ -11,24 +11,298 @@
     var canCreateCoding = ViewBag.CanCreateCoding ?? false;
 }
 
-<div class="container mt-5">
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="d-flex justify-content-between align-items-center">
-                <h2 class="mb-0">Welcome, @username!</h2>
-                @if (isAuthenticated && (isAdmin || userRole == "Organization"))
-                {
-                    <a href="/Test/Create" class="btn btn-primary">
-                        <i class="fas fa-plus-circle me-2"></i>Create New Test
-                    </a>
-                }
+@section Styles {
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-hover: #1d4ed8;
+            --success-color: #22c55e;
+            --info-color: #3b82f6;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --dark-bg: #1e1e1e;
+            --light-bg: #f8fafc;
+            --border-color: #e2e8f0;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --hover-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-primary);
+        }
+
+        .container {
+            max-width: 1400px;
+            padding: 2rem;
+        }
+
+        .welcome-section {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+            color: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--card-shadow);
+        }
+
+        .welcome-section h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .create-test-btn {
+            background-color: white;
+            color: var(--primary-color);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .create-test-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--hover-shadow);
+            background-color: white;
+            color: var(--primary-hover);
+        }
+
+        .alert {
+            border: none;
+            border-radius: 1rem;
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--card-shadow);
+        }
+
+        .alert-info {
+            background: linear-gradient(135deg, var(--info-color), #2563eb);
+            color: white;
+        }
+
+        .alert-warning {
+            background: linear-gradient(135deg, var(--warning-color), #d97706);
+            color: white;
+        }
+
+        .alert-link {
+            color: white;
+            text-decoration: underline;
+            font-weight: 500;
+        }
+
+        .test-card {
+            border: none;
+            border-radius: 1rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            background-color: white;
+            box-shadow: var(--card-shadow);
+            height: 100%;
+        }
+
+        .test-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--hover-shadow);
+        }
+
+        .test-card .card-header {
+            background: white;
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.5rem;
+        }
+
+        .test-card .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .test-card .badge {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        .test-card .card-body {
+            padding: 1.5rem;
+        }
+
+        .test-card .card-text {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .test-info {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .test-info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .test-info-item i {
+            color: var(--primary-color);
+        }
+
+        .test-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .test-actions .btn {
+            padding: 0.625rem 1.25rem;
+            border-radius: 0.75rem;
+            font-weight: 500;
+            font-size: 0.875rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .test-actions .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+            border: none;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        }
+
+        .test-actions .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
+        }
+
+        .test-actions .btn-info {
+            background: linear-gradient(135deg, var(--info-color), #2563eb);
+            border: none;
+            color: white;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+        }
+
+        .test-actions .btn-info:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(59, 130, 246, 0.3);
+            background: linear-gradient(135deg, var(--info-color), #2563eb);
+            color: white;
+        }
+
+        .test-actions .btn-danger {
+            background: linear-gradient(135deg, var(--danger-color), #dc2626);
+            border: none;
+            color: white;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+        }
+
+        .test-actions .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(239, 68, 68, 0.3);
+            background: linear-gradient(135deg, var(--danger-color), #dc2626);
+            color: white;
+        }
+
+        .test-card .card-footer {
+            background: white;
+            border-top: 1px solid var(--border-color);
+            padding: 1rem 1.5rem;
+        }
+
+        .test-card .card-footer small {
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .test-card .card-footer i {
+            color: var(--primary-color);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            background: white;
+            border-radius: 1rem;
+            box-shadow: var(--card-shadow);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .empty-state h3 {
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .empty-state p {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        @@media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .welcome-section {
+                padding: 1.5rem;
+            }
+
+            .test-info {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            .test-actions {
+                flex-wrap: wrap;
+            }
+
+            .test-actions .btn {
+                flex: 1;
+                min-width: 120px;
+            }
+        }
+    </style>
+}
+
+<div class="container">
+    <div class="welcome-section">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h2>Welcome, @username!</h2>
+                <p class="mb-0">Browse and take available tests or create new ones.</p>
             </div>
+            @if (isAuthenticated && (isAdmin || userRole == "Organization"))
+            {
+                <a href="/Test/Create" class="create-test-btn">
+                    <i class="fas fa-plus-circle"></i>
+                    Create New Test
+                </a>
+            }
         </div>
     </div>
 
     @if (!isAuthenticated)
     {
-        <div class="alert alert-info shadow-sm">
+        <div class="alert alert-info">
             <i class="fas fa-info-circle me-2"></i>
             Please <a href="/Auth/Login" class="alert-link">login</a> to take tests or create new ones.
         </div>
@@ -36,74 +310,82 @@
 
     @if (userRole == "Organization" && !hasActiveSubscription)
     {
-        <div class="alert alert-warning shadow-sm">
+        <div class="alert alert-warning">
             <i class="fas fa-exclamation-triangle me-2"></i>
             You need an active subscription to create tests. 
             <a href="/Pricing" class="alert-link">View pricing plans</a>
         </div>
     }
 
-    <div class="row">
+    <div class="row g-4">
         @if (Model.Any())
         {
             foreach (var test in Model)
             {
-                <div class="col-md-6 col-lg-4 mb-4" data-test-id="@test.Id">
-                    <div class="card h-100 shadow-sm">
-                        <div class="card-header bg-white">
+                <div class="col-md-6 col-lg-4" data-test-id="@test.Id">
+                    <div class="test-card">
+                        <div class="card-header">
                             <div class="d-flex justify-content-between align-items-center">
-                                <h5 class="card-title mb-0 text-truncate" title="@test.Title">@test.Title</h5>
+                                <h5 class="card-title text-truncate" title="@test.Title">@test.Title</h5>
                                 <span class="badge bg-@(test.Type == TestType.MultipleChoice ? "primary" : "success")">
                                     @(test.Type == TestType.MultipleChoice ? "MCQ" : "Coding")
                                 </span>
                             </div>
                         </div>
                         <div class="card-body">
-                            <p class="card-text text-muted mb-3">@test.Description</p>
-                            <div class="mb-3">
-                                <small class="text-muted">
-                                    <i class="fas fa-clock me-1"></i> @test.DurationMinutes minutes
-                                </small>
-                                <small class="text-muted ms-3">
-                                    <i class="fas fa-users me-1"></i> @test.MaxStudents students
-                                </small>
-                                <small class="text-muted ms-3">
-                                    <i class="fas fa-redo me-1"></i> @test.MaxAttempts attempts
-                                </small>
+                            <p class="card-text">@test.Description</p>
+                            <div class="test-info">
+                                <div class="test-info-item">
+                                    <i class="fas fa-clock"></i>
+                                    @test.DurationMinutes min
+                                </div>
+                                <div class="test-info-item">
+                                    <i class="fas fa-users"></i>
+                                    @test.MaxStudents students
+                                </div>
+                                <div class="test-info-item">
+                                    <i class="fas fa-redo"></i>
+                                    @test.MaxAttempts attempts
+                                </div>
                             </div>
-                            <div class="d-flex gap-2">
+                            <div class="test-actions">
                                 @if (userRole == "Candidate")
                                 {
-                                    <a href="/Test/Take/@test.Id" class="btn btn-primary btn-sm flex-grow-1">
-                                        <i class="fas fa-play me-1"></i> Start Test
+                                    <a href="/Test/Take/@test.Id" class="btn btn-primary flex-grow-1">
+                                        <i class="fas fa-play"></i>
+                                        Start Test
                                     </a>
                                 }
                                 else if (isAdmin || userRole == "Organization")
                                 {
-                                    <a href="/Test/Take/@test.Id" class="btn btn-primary btn-sm">
-                                        <i class="fas fa-play me-1"></i> Start
+                                    <a href="/Test/Take/@test.Id" class="btn btn-primary">
+                                        <i class="fas fa-play"></i>
+                                        Start
                                     </a>
-                                    <a href="/Test/Share/@test.Id" class="btn btn-info btn-sm">
-                                        <i class="fas fa-share-alt me-1"></i> Share
+                                    <a href="/Test/Share/@test.Id" class="btn btn-info">
+                                        <i class="fas fa-share-alt"></i>
+                                        Share
                                     </a>
                                     @if (isAdmin)
                                     {
-                                        <button class="btn btn-danger btn-sm" onclick="deleteTest(@test.Id)">
+                                        <button class="btn btn-danger" onclick="deleteTest(@test.Id)">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     }
                                 }
                                 else
                                 {
-                                    <button class="btn btn-secondary btn-sm flex-grow-1" disabled title="Please login to take the test">
-                                        <i class="fas fa-lock me-1"></i> Login Required
+                                    <button class="btn btn-secondary flex-grow-1" disabled title="Please login to take the test">
+                                        <i class="fas fa-lock"></i>
+                                        Login Required
                                     </button>
                                 }
                             </div>
                         </div>
-                        <div class="card-footer bg-white">
-                            <small class="text-muted">
-                                <i class="fas fa-calendar-alt me-1"></i> Created @test.CreatedAt.ToString("MMM dd, yyyy")
+                        <div class="card-footer">
+                            <small>
+                                <i class="fas fa-calendar-alt"></i>
+                                Created @test.CreatedAt.ToString("MMM dd, yyyy")
                             </small>
                         </div>
                     </div>
@@ -113,9 +395,17 @@
         else
         {
             <div class="col-12">
-                <div class="alert alert-info shadow-sm">
-                    <i class="fas fa-info-circle me-2"></i>
-                    No tests available at the moment.
+                <div class="empty-state">
+                    <i class="fas fa-clipboard-list"></i>
+                    <h3>No Tests Available</h3>
+                    <p>There are no tests available at the moment.</p>
+                    @if (isAuthenticated && (isAdmin || userRole == "Organization"))
+                    {
+                        <a href="/Test/Create" class="create-test-btn">
+                            <i class="fas fa-plus-circle"></i>
+                            Create Your First Test
+                        </a>
+                    }
                 </div>
             </div>
         }

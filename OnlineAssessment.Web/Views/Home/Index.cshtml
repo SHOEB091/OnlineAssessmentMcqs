@@ -4,269 +4,626 @@
 
 @section Styles {
     <style>
-        .hero-section {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            min-height: calc(100vh - 80px);
-            display: flex;
-            align-items: center;
+        /* Base Styles */
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
             color: #333;
+        }
+
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: #1e293b;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: #64748b;
+            margin-bottom: 3rem;
+            max-width: 700px;
+        }
+
+        .btn-primary-custom {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary-custom:hover {
+            background-color: #2563eb;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline-custom {
+            background-color: transparent;
+            color: #3b82f6;
+            border: 2px solid #3b82f6;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-custom:hover {
+            background-color: #3b82f6;
+            color: white;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: white;
+            padding: 80px 0 40px;
             position: relative;
-            overflow: hidden;
-            margin: 0;
-            padding: 0;
         }
 
         .hero-content {
-            position: relative;
-            z-index: 1;
-            padding: 4rem 0;
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+
+        .hero-text {
+            flex: 1;
+        }
+
+        .hero-image {
+            flex: 1;
+            text-align: right;
+        }
+
+        .hero-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
         }
 
         .hero-title {
             font-size: 3.5rem;
             font-weight: 800;
             margin-bottom: 1.5rem;
-            color: #2c3e50;
+            color: #1e293b;
             line-height: 1.2;
         }
 
+        .hero-title span {
+            background-color: #3b82f6;
+            color: white;
+            padding: 0 10px;
+            border-radius: 5px;
+        }
+
         .hero-subtitle {
-            font-size: 1.5rem;
-            color: #34495e;
-            margin-bottom: 2.5rem;
+            font-size: 1.2rem;
+            color: #64748b;
+            margin-bottom: 2rem;
             line-height: 1.6;
-        }
-
-        .btn-custom {
-            padding: 1rem 2.5rem;
-            font-weight: 600;
-            border-radius: 50px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            transition: all 0.3s ease;
-            font-size: 1.1rem;
-        }
-
-        .btn-primary-custom {
-            background-color: #3498db;
-            color: white;
-            border: none;
-            box-shadow: 0 4px 6px rgba(52, 152, 219, 0.3);
-        }
-
-        .btn-primary-custom:hover {
-            background-color: #2980b9;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 8px rgba(52, 152, 219, 0.4);
-        }
-
-        .btn-outline-custom {
-            background-color: transparent;
-            color: #3498db;
-            border: 2px solid #3498db;
-        }
-
-        .btn-outline-custom:hover {
-            background-color: #3498db;
-            color: white;
         }
 
         .hero-buttons {
             display: flex;
             gap: 1rem;
-            justify-content: center;
+            margin-bottom: 2rem;
         }
 
-        .stats-section {
-            padding: 60px 0;
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .hero-stat {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .hero-stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #3b82f6;
+        }
+
+        .hero-stat-label {
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        .partners {
+            padding: 30px 0;
+            border-top: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+            margin-top: 40px;
+        }
+
+        .partners-list {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+            opacity: 0.7;
+        }
+
+        .partners-list img {
+            height: 30px;
+            width: auto;
+        }
+
+        /* About Section */
+        .about-section {
+            background-color: #f8fafc;
+            padding: 80px 0;
+        }
+
+        .about-content {
+            display: flex;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-text {
+            flex: 1;
+        }
+
+        .about-images {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .about-image {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        /* Features Section */
+        .features-section {
+            padding: 80px 0;
             background-color: white;
         }
 
-        .stat-item {
-            text-align: center;
-            padding: 2rem;
-            transition: transform 0.3s ease;
-        }
-
-        .stat-item:hover {
-            transform: translateY(-5px);
-        }
-
-        .stat-number {
-            font-size: 3rem;
-            font-weight: 700;
-            color: #3498db;
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-label {
-            font-size: 1.1rem;
-            color: #7f8c8d;
-            font-weight: 500;
-        }
-
-        .feature-section {
-            padding: 80px 0;
-            background-color: #f8f9fa;
-        }
-
-        .section-title {
-            font-size: 2.5rem;
-            font-weight: 700;
+        .features-intro {
             margin-bottom: 3rem;
             text-align: center;
-            color: #2c3e50;
-            position: relative;
         }
 
-        .section-title::after {
-            content: '';
-            display: block;
-            width: 80px;
-            height: 4px;
-            background: #3498db;
-            margin: 15px auto 0;
-            border-radius: 2px;
+        .features-dashboard {
+            margin-bottom: 4rem;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
 
-        .feature-list {
-            list-style: none;
-            padding: 0;
+        .features-dashboard img {
+            width: 100%;
+            height: auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
         }
 
         .feature-item {
-            margin-bottom: 2.5rem;
-            padding: 2rem;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border-top: 4px solid #3498db;
-        }
-
-        .feature-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
         }
 
         .feature-icon {
-            font-size: 2.5rem;
-            color: #3498db;
-            margin-bottom: 1rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            background-color: #eff6ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #3b82f6;
+            font-size: 1.5rem;
         }
 
         .feature-title {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             font-weight: 600;
-            margin-bottom: 0.75rem;
-            color: #2c3e50;
+            color: #1e293b;
         }
 
         .feature-description {
-            color: #7f8c8d;
-            line-height: 1.7;
+            font-size: 0.95rem;
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        /* Service Learning Section */
+        .service-section {
+            background-color: #f8fafc;
+            padding: 80px 0;
+        }
+
+        .service-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .service-card {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .service-card.primary {
+            background-color: #3b82f6;
+            color: white;
+        }
+
+        .service-card.primary h3 {
+            color: white;
+        }
+
+        .service-card.primary p {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .service-card.primary .btn-outline-white {
+            color: white;
+            border-color: white;
+        }
+
+        .service-card.primary .btn-outline-white:hover {
+            background-color: white;
+            color: #3b82f6;
+        }
+
+        .service-card-img {
+            overflow: hidden;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .service-card-img img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        /* Pricing Section */
+        .pricing-section {
+            padding: 80px 0;
+            background-color: white;
+        }
+
+        .pricing-intro {
+            text-align: center;
+            margin-bottom: 3rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .pricing-plan {
+            background-color: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .pricing-plan:hover {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .pricing-header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .pricing-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+
+        .pricing-description {
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        .pricing-price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #3b82f6;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .pricing-price span {
+            font-size: 1rem;
+            color: #64748b;
+            font-weight: 400;
+        }
+
+        .pricing-features {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 2rem 0;
+            flex-grow: 1;
+        }
+
+        .pricing-features li {
+            margin-bottom: 0.75rem;
+            position: relative;
+            padding-left: 1.5rem;
+            color: #64748b;
+        }
+
+        .pricing-features li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #3b82f6;
+            font-weight: bold;
+        }
+
+        .pricing-plan .btn {
+            margin-top: auto;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background-color: #3b82f6;
+            padding: 80px 0;
+            color: white;
+        }
+
+        .cta-content {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+
+        .cta-text {
+            flex: 1;
+        }
+
+        .cta-image {
+            flex: 1;
+        }
+
+        .cta-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .cta-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .cta-description {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
             font-size: 1.1rem;
+        }
+
+        .cta-form {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .btn-white {
+            background-color: white;
+            color: #3b82f6;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-white:hover {
+            background-color: #f1f5f9;
+            transform: translateY(-2px);
+        }
+
+        /* Responsive */
+        @@media (max-width: 992px) {
+            .hero-content, .about-content, .cta-content {
+                flex-direction: column;
+            }
+
+            .hero-image, .about-images, .cta-image {
+                order: -1;
+            }
+
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         @@media (max-width: 768px) {
             .hero-title {
                 font-size: 2.5rem;
             }
-            
-            .hero-subtitle {
-                font-size: 1.2rem;
+
+            .section-title {
+                font-size: 2rem;
             }
-            
+
             .hero-buttons {
                 flex-direction: column;
-                align-items: center;
             }
-            
-            .btn-custom {
-                width: 100%;
-                max-width: 300px;
+
+            .hero-stats {
+                flex-wrap: wrap;
+                gap: 1.5rem;
+            }
+
+            .partners-list {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .about-images {
+                grid-template-columns: 1fr 1fr;
             }
         }
     </style>
 }
 
-<div class="hero-section">
+<!-- Hero Section -->
+<section class="hero-section">
     <div class="container">
         <div class="hero-content">
-            <h1 class="hero-title">Welcome to Online Assessment Platform</h1>
-            <p class="hero-subtitle">Experience the future of online testing with our advanced assessment platform. Take tests, track your progress, and improve your skills with our comprehensive evaluation system.</p>
-            <div class="hero-buttons">
-                <a href="/Test" class="btn btn-custom btn-primary-custom">Start Testing</a>
-                <a href="/Auth/Register" class="btn btn-custom btn-outline-custom">Get Started</a>
+            <div class="hero-text">
+                <h1 class="hero-title">Embark on a Journey of <span>Knowledge</span></h1>
+                <p class="hero-subtitle">Enhance your skills with our comprehensive online assessment platform. Take tests, track your progress, and improve your understanding with real-time feedback.</p>
+                <div class="hero-buttons">
+                    <a href="@Url.Action("Index", "Test")" class="btn btn-primary-custom">Take a Test</a>
+                    <a href="@Url.Action("Register", "Auth")" class="btn btn-outline-custom">Create Account</a>
+                </div>
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <span class="hero-stat-number">40x</span>
+                        <span class="hero-stat-label">Better performance</span>
+                    </div>
+                    <div class="hero-stat">
+                        <span class="hero-stat-number">100%</span>
+                        <span class="hero-stat-label">Success rate</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="~/images/home.png" alt="Online Assessment Platform">
             </div>
         </div>
     </div>
-</div>
+</section>
 
-<div class="stats-section">
+<!-- Features Section -->
+
+
+<!-- Pricing Section -->
+<section class="pricing-section">
     <div class="container">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="stat-item">
-                    <div class="stat-number">1000+</div>
-                    <div class="stat-label">MCQ Questions</div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="stat-item">
-                    <div class="stat-number">50+</div>
-                    <div class="stat-label">Test Categories</div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="stat-item">
-                    <div class="stat-number">10,000+</div>
-                    <div class="stat-label">Active Users</div>
-                </div>
-            </div>
+        <div class="pricing-intro">
+            <h2 class="section-title">Your Ideal Plan from Online Assessment Price Tiers</h2>
+            <p class="section-subtitle">Choose the subscription that best fits your needs and budget. All plans include access to our core features.</p>
         </div>
-    </div>
-</div>
-
-<div class="feature-section">
-    <div class="container">
-        <h2 class="section-title">Why Choose Our Platform</h2>
-        <div class="row">
-            <div class="col-lg-8 mx-auto">
-                <ul class="feature-list">
-                    <li class="feature-item">
-                        <div class="feature-icon">
-                            <i class="fas fa-tasks"></i>
-                        </div>
-                        <h3 class="feature-title">Comprehensive MCQ Tests</h3>
-                        <p class="feature-description">Access a wide range of multiple-choice questions covering various subjects and difficulty levels. Our tests are designed to assess your knowledge effectively.</p>
-                    </li>
-                    <li class="feature-item">
-                        <div class="feature-icon">
-                            <i class="fas fa-chart-line"></i>
-                        </div>
-                        <h3 class="feature-title">Instant Results</h3>
-                        <p class="feature-description">Receive immediate feedback on your answers. Our system provides detailed explanations to help you understand where you went wrong and how to improve.</p>
-                    </li>
-                    <li class="feature-item">
-                        <div class="feature-icon">
-                            <i class="fas fa-chart-bar"></i>
-                        </div>
-                        <h3 class="feature-title">Progress Tracking</h3>
-                        <p class="feature-description">Monitor your improvement over time with our detailed analytics dashboard. Track your performance, identify areas for improvement, and set personal learning goals.</p>
-                    </li>
-                    <li class="feature-item">
-                        <div class="feature-icon">
-                            <i class="fas fa-mobile-alt"></i>
-                        </div>
-                        <h3 class="feature-title">Mobile Friendly</h3>
-                        <p class="feature-description">Take tests on any device, anywhere. Our responsive design ensures a seamless experience whether you're on desktop, tablet, or mobile.</p>
-                    </li>
+        <div class="pricing-grid">
+            <div class="pricing-plan">
+                <div class="pricing-header">
+                    <h3 class="pricing-name">Basic Level Subscription</h3>
+                    <p class="pricing-description">Everything included</p>
+                </div>
+                <div class="pricing-price">₹1,299<span>/month</span></div>
+                <ul class="pricing-features">
+                    <li>Core Assessment Tools</li>
+                    <li>Basic Analytics</li>
+                    <li>User Management</li>
+                    <li>Question Database</li>
+                    <li>Standard Support</li>
+                    <li>Standard Templates</li>
                 </ul>
+                <a href="#" class="btn btn-primary-custom d-block">Get Started</a>
+            </div>
+            <div class="pricing-plan">
+                <div class="pricing-header">
+                    <h3 class="pricing-name">Standard Level Subscription</h3>
+                    <p class="pricing-description">Everything included</p>
+                </div>
+                <div class="pricing-price">₹3,499<span>/month</span></div>
+                <ul class="pricing-features">
+                    <li>Advanced Analytics</li>
+                    <li>Enhanced Reporting</li>
+                    <li>Customization Options</li>
+                    <li>Priority Support</li>
+                    <li>Performance Insights</li>
+                    <li>Collaborative Features</li>
+                </ul>
+                <a href="#" class="btn btn-primary-custom d-block">Get Started</a>
+            </div>
+            <div class="pricing-plan">
+                <div class="pricing-header">
+                    <h3 class="pricing-name">Enterprise Level Subscription</h3>
+                    <p class="pricing-description">Everything included</p>
+                </div>
+                <div class="pricing-price">₹5,699<span>/month</span></div>
+                <ul class="pricing-features">
+                    <li>Advanced AI Management</li>
+                    <li>Custom Development</li>
+                    <li>White-labeling Options</li>
+                    <li>24/7 Premium Support</li>
+                    <li>Advanced Integration</li>
+                    <li>Unlimited Access</li>
+                </ul>
+                <a href="#" class="btn btn-primary-custom d-block">Get Started</a>
             </div>
         </div>
     </div>
-</div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-content">
+            <div class="cta-text">
+                <h2 class="cta-title">Join Online Assessment & Unlock Your Learning Potential</h2>
+                <p class="cta-description">Explore the innovations and opportunities in assessment that transform the way we learn and evaluate knowledge.</p>
+                <form class="cta-form">
+                    <input type="email" class="cta-input" placeholder="Enter your email">
+                    <button type="submit" class="btn btn-white">Get Started</button>
+                </form>
+            </div>
+            <div class="cta-image">
+                <img src="~/images/home.png" alt="Join Us">
+            </div>
+        </div>
+    </div>
+</section>

@@ -2,25 +2,176 @@
     ViewData["Title"] = "Enter Test ID";
 }
 
-<div class="container mt-4">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h2 class="card-title text-center mb-4">Enter Test ID</h2>
-                    
-                    <form asp-action="StartShared" asp-route-shareId="@ViewBag.ShareId" method="post">
-                        <div class="form-group mb-3">
-                            <label for="testId" class="form-label">Test ID</label>
-                            <input type="text" class="form-control" id="testId" name="testId" required>
-                        </div>
-                        
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary">Start Test</button>
-                        </div>
-                    </form>
-                </div>
+@section Styles {
+    <style>
+        .access-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .access-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .access-header h2 {
+            color: #1e293b;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .access-header p {
+            color: #64748b;
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .access-card {
+            background: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(226, 232, 240, 0.5);
+        }
+
+        .access-card h3 {
+            color: #1e293b;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .access-card h3 i {
+            color: #3b82f6;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            color: #1e293b;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 1rem;
+            font-size: 1.1rem;
+            color: #1e293b;
+            background-color: #f8fafc;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+        }
+
+        .start-button {
+            width: 100%;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+            border: none;
+            border-radius: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(59 130 246 / 0.2);
+        }
+
+        .start-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 8px -1px rgb(59 130 246 / 0.3);
+        }
+
+        .access-info {
+            color: #64748b;
+            font-size: 1rem;
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem;
+            background-color: #f8fafc;
+            border-radius: 0.75rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .access-info i {
+            color: #3b82f6;
+            font-size: 1.25rem;
+        }
+
+        @@media (max-width: 768px) {
+            .access-container {
+                margin: 1.5rem auto;
+            }
+
+            .access-header h2 {
+                font-size: 2rem;
+            }
+
+            .access-header p {
+                font-size: 1.1rem;
+            }
+
+            .access-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+}
+
+<div class="access-container">
+    <div class="access-header">
+        <h2>Enter Test ID</h2>
+        <p>Please enter your test ID to begin the assessment</p>
+    </div>
+
+    <div class="access-card">
+        <h3>
+            <i class="fas fa-key"></i>
+            Test Access
+        </h3>
+        
+        <form asp-action="StartShared" asp-route-shareId="@ViewBag.ShareId" method="post">
+            <div class="form-group">
+                <label for="testId" class="form-label">Test ID</label>
+                <input type="text" class="form-input" id="testId" name="testId" required 
+                       placeholder="Enter your test ID here">
             </div>
-        </div>
+            
+            <button type="submit" class="start-button">
+                <i class="fas fa-play"></i>
+                Start Test
+            </button>
+        </form>
+
+        <p class="access-info">
+            <i class="fas fa-info-circle"></i>
+            Enter the test ID provided by your instructor to begin the assessment.
+        </p>
     </div>
 </div> 

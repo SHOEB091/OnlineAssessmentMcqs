@@ -4,74 +4,91 @@
     ViewData["Title"] = "Test Result";
 }
 
-<div class="container mt-4">
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                    <h2 class="mb-0">Test Result</h2>
-                    <div>
-                        <button onclick="exportResult()" class="btn btn-light me-2">
-                            <i class="fas fa-download"></i> Export Result
+<div class="result-container">
+    <div class="result-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="display-4 mb-3">Test Result</h1>
+                    <p class="lead text-muted">@Model.Test.Title</p>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <div class="action-buttons">
+                        <button onclick="exportResult()" class="btn btn-outline-light me-2">
+                            <i class="fas fa-download"></i> Export
                         </button>
-                        <a href="/Test/History" class="btn btn-light">
-                            <i class="fas fa-history"></i> View History
+                        <a href="/Test/History" class="btn btn-outline-light">
+                            <i class="fas fa-history"></i> History
                         </a>
                     </div>
                 </div>
-                <div class="card-body">
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <div class="card h-100 border-0 bg-light">
-                                <div class="card-body">
-                                    <h4 class="text-primary mb-4">Test Details</h4>
-                                    <div class="mb-3">
-                                        <i class="fas fa-book me-2"></i>
-                                        <strong>Test:</strong> @Model.Test.Title
-                                    </div>
-                                    <div class="mb-3">
-                                        <i class="fas fa-user me-2"></i>
-                                        <strong>Submitted by:</strong> @Model.Username
-                                    </div>
-                                    <div class="mb-3">
-                                        <i class="fas fa-clock me-2"></i>
-                                        <strong>Submitted at:</strong> @Model.SubmittedAt.ToString("g")
-                                    </div>
-                                    <div class="mb-3">
-                                        <i class="fas fa-question-circle me-2"></i>
-                                        <strong>Total Questions:</strong> @Model.TotalQuestions
-                                    </div>
-                                    <div class="mb-3">
-                                        <i class="fas fa-check-circle me-2"></i>
-                                        <strong>Correct Answers:</strong> @Model.CorrectAnswers
-                                    </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="result-card">
+                    <div class="result-summary">
+                        <div class="score-display">
+                            <div class="score-circle @(Model.Score >= 70 ? "score-pass" : "score-fail")">
+                                <div class="score-content">
+                                    <h2 class="display-2 mb-0">@Model.Score.ToString("0")</h2>
+                                    <small>out of 100</small>
                                 </div>
                             </div>
+                            <div class="score-status">
+                                <span class="badge @(Model.Score >= 70 ? "bg-success" : "bg-danger")">
+                                    @(Model.Score >= 70 ? "PASSED" : "FAILED")
+                                </span>
+                            </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="card h-100 border-0 bg-light">
-                                <div class="card-body text-center">
-                                    <h4 class="text-primary mb-4">MCQ Score</h4>
-                                    <div class="score-circle mx-auto mb-4 @(Model.Score >= 70 ? "border-success" : "border-danger")">
-                                        <div>
-                                            <h1 class="display-2 mb-0">@Model.Score.ToString("0")</h1>
-                                            <p class="mb-0">out of 100</p>
-                                        </div>
-                                    </div>
-                                    <div class="mt-3">
-                                        <span class="badge @(Model.Score >= 70 ? "bg-success" : "bg-danger") p-3 fs-5">
-                                            @(Model.Score >= 70 ? "PASSED" : "FAILED")
-                                        </span>
-                                    </div>
+                        <div class="result-details">
+                            <div class="detail-item">
+                                <i class="fas fa-user"></i>
+                                <div>
+                                    <span class="label">Candidate</span>
+                                    <span class="value">@Model.Username</span>
+                                </div>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-calendar"></i>
+                                <div>
+                                    <span class="label">Submitted</span>
+                                    <span class="value">@Model.SubmittedAt.ToString("MMM dd, yyyy HH:mm")</span>
+                                </div>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-question-circle"></i>
+                                <div>
+                                    <span class="label">Questions</span>
+                                    <span class="value">@Model.TotalQuestions</span>
+                                </div>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-check-circle"></i>
+                                <div>
+                                    <span class="label">Correct</span>
+                                    <span class="value">@Model.CorrectAnswers</span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="text-center mt-4">
-                        <a href="/Test/Index" class="btn btn-primary btn-lg">
-                            <i class="fas fa-arrow-left me-2"></i>Back to Tests
-                        </a>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="result-actions">
+                    <div class="action-card">
+                        <h4>Next Steps</h4>
+                        <div class="action-buttons">
+                            <a href="/Test/Index" class="btn btn-primary btn-lg w-100 mb-3">
+                                <i class="fas fa-arrow-left me-2"></i>Back to Tests
+                            </a>
+                            <a href="/Test/History" class="btn btn-outline-primary btn-lg w-100">
+                                <i class="fas fa-history me-2"></i>View History
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -80,45 +97,150 @@
 </div>
 
 <style>
+    .result-container {
+        min-height: 100vh;
+        background-color: #f8f9fa;
+    }
+
+    .result-header {
+        background: linear-gradient(135deg, #3498db, #2c3e50);
+        color: white;
+        padding: 3rem 0;
+        margin-bottom: 2rem;
+    }
+
+    .result-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .result-summary {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .score-display {
+        margin-bottom: 2rem;
+    }
+
     .score-circle {
-        width: 200px;
-        height: 200px;
+        width: 180px;
+        height: 180px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        border-width: 10px;
-        border-style: solid;
-        background-color: white;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        margin: 0 auto 1rem;
+        border: 10px solid;
+        background: white;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     }
 
-    .border-success {
+    .score-pass {
         border-color: #28a745;
+        color: #28a745;
     }
 
-    .border-danger {
+    .score-fail {
         border-color: #dc3545;
+        color: #dc3545;
+    }
+
+    .score-content {
+        text-align: center;
+    }
+
+    .score-content small {
+        font-size: 0.9rem;
+        opacity: 0.8;
+    }
+
+    .result-details {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        width: 100%;
+    }
+
+    .detail-item {
+        display: flex;
+        align-items: center;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 10px;
+        transition: transform 0.2s;
+    }
+
+    .detail-item:hover {
+        transform: translateY(-3px);
+    }
+
+    .detail-item i {
+        font-size: 1.5rem;
+        margin-right: 1rem;
+        color: #3498db;
+    }
+
+    .detail-item .label {
+        display: block;
+        font-size: 0.9rem;
+        color: #6c757d;
+    }
+
+    .detail-item .value {
+        display: block;
+        font-size: 1.1rem;
+        font-weight: 500;
+        color: #2c3e50;
+    }
+
+    .result-actions {
+        position: sticky;
+        top: 2rem;
+    }
+
+    .action-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+    }
+
+    .action-card h4 {
+        margin-bottom: 1.5rem;
+        color: #2c3e50;
     }
 
     .badge {
-        font-size: 1.1em;
-        padding: 0.5em 1.5em;
+        font-size: 1.1rem;
+        padding: 0.5rem 1.5rem;
         border-radius: 30px;
     }
 
-    .card {
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        border-radius: 15px;
-        transition: transform 0.2s ease;
+    .btn {
+        border-radius: 10px;
+        padding: 0.75rem 1.5rem;
+        font-weight: 500;
+        transition: all 0.3s;
     }
 
-    .card:hover {
-        transform: translateY(-5px);
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     }
 
-    .bg-light {
-        background-color: #f8f9fa !important;
+    .btn-outline-light {
+        border: 2px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .btn-outline-light:hover {
+        background: white;
+        color: #3498db;
     }
 </style>
 

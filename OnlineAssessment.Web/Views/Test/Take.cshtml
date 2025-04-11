@@ -8,828 +8,428 @@
 }
 
 @section Styles {
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/editor/editor.main.min.css">
     <style>
         :root {
-            --primary-color: #0078d4;
-            --success-color: #28a745;
-            --error-color: #dc3545;
-            --warning-color: #ffc107;
-            --dark-bg: #1e1e1e;
-            --light-bg: #f8f9fa;
-            --border-color: #e9ecef;
-            --text-primary: #212529;
-            --text-secondary: #6c757d;
+            --primary-color: #10b981;
+            --primary-hover: #059669;
+            --primary-light: #d1fae5;
+            --background-color: #f9fafb;
+            --card-bg: #ffffff;
+            --border-color: #e5e7eb;
+            --text-primary: #1f2937;
+            --text-secondary: #4b5563;
+            --text-muted: #9ca3af;
         }
 
         body {
-            background-color: #f5f5f5;
+            background-color: var(--background-color);
+            color: var(--text-primary);
         }
 
-        .container {
-            max-width: 1400px;
-            padding: 2rem;
-        }
-
-        .card {
-            border: none;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-2px);
-        }
-
-        .card-header {
-            background: linear-gradient(135deg, var(--primary-color), #005a9e);
-            color: white;
-            border: none;
-            padding: 1.5rem;
-        }
-
-        .editor-container {
-            height: 500px;
-            border: 1px solid var(--border-color);
-            margin-bottom: 1.5rem;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            background-color: var(--dark-bg);
-        }
-
-        .test-case-panel {
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            background-color: white;
-        }
-
-        .test-case-header {
-            padding: 1rem 1.5rem;
-            background: linear-gradient(135deg, var(--light-bg), #e9ecef);
-            border-bottom: 1px solid var(--border-color);
+        /* Test Header */
+        .test-header {
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            padding: 15px 20px;
+            background-color: white;
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
 
-        .test-case-content {
-            padding: 1.5rem;
-            max-height: 500px;
+        .header-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-left: 10px;
+        }
+
+        .back-button {
+            color: var(--text-primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Main Container */
+        .test-container {
+            display: flex;
+            height: calc(100vh - 60px);
+        }
+
+        /* Sidebar */
+        .test-sidebar {
+            width: 250px;
+            background-color: white;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
             overflow-y: auto;
         }
 
-        .test-case-result {
-            padding: 1.5rem;
-            margin-top: 1.5rem;
-            border-radius: 12px;
-            transition: all 0.3s ease;
+        .sidebar-section {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
         }
 
-        .result-success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
-        .result-error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-
-        .code-editor-wrapper {
-            position: relative;
-            margin-bottom: 2rem;
-        }
-
-        .editor-toolbar {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            z-index: 10;
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-            background-color: rgba(30, 30, 30, 0.9);
-            padding: 0.5rem;
-            border-radius: 8px;
-            backdrop-filter: blur(4px);
-        }
-
-        .language-select {
-            background-color: var(--dark-bg);
-            color: #d4d4d4;
-            border: 1px solid #3c3c3c;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            font-size: 14px;
-            min-width: 140px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .language-select:hover {
-            border-color: var(--primary-color);
-        }
-
-        .language-select:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 2px rgba(0, 120, 212, 0.2);
-        }
-
-        .language-select option {
-            background-color: var(--dark-bg);
-            color: #d4d4d4;
-            padding: 0.5rem;
-        }
-
-        .run-code-btn {
-            background-color: var(--success-color);
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: all 0.2s ease;
+        .sidebar-section-title {
+            font-size: 0.875rem;
             font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
         }
 
-        .run-code-btn:hover {
-            background-color: #218838;
-            transform: translateY(-1px);
+        /* Timer */
+        .timer-container {
+            text-align: center;
         }
 
-        .run-code-btn:disabled {
-            background-color: var(--text-secondary);
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .test-case {
-            background-color: var(--light-bg);
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            border: 1px solid var(--border-color);
-            transition: all 0.2s ease;
-        }
-
-        .test-case:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        }
-
-        .test-case pre {
-            background-color: var(--dark-bg);
-            color: #f8f9fa;
-            padding: 1rem;
-            border-radius: 6px;
-            margin: 0.75rem 0;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-
-        .test-case strong {
+        .timer-display {
+            font-size: 1.5rem;
+            font-weight: 700;
             color: var(--text-primary);
-            font-weight: 600;
+            margin-bottom: 5px;
         }
 
-        .tab-content {
-            background-color: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            padding: 2rem;
+        .timer-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
         }
 
-        .question-section {
-            background-color: white;
-            border-radius: 12px;
-            padding: 2rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        /* Question Navigation */
+        .questions-nav {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
         }
 
-        .nav-pills {
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .nav-pills .nav-link {
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            font-weight: 500;
-            transition: all 0.2s ease;
-        }
-
-        .nav-pills .nav-link:hover {
-            transform: translateY(-1px);
-        }
-
-        .nav-pills .nav-link.active {
-            background: linear-gradient(135deg, var(--primary-color), #005a9e);
-            box-shadow: 0 4px 12px rgba(0, 120, 212, 0.2);
-        }
-
-        .badge {
-            padding: 0.5rem 1rem;
+        .question-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
             border-radius: 6px;
-            font-weight: 500;
+            background-color: white;
+            border: 1px solid var(--border-color);
+            font-size: 0.875rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s;
         }
 
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            font-weight: 500;
-            transition: all 0.2s ease;
+        .question-button:hover {
+            border-color: var(--primary-color);
         }
 
-        .btn:hover {
-            transform: translateY(-1px);
-        }
-
-        .btn-success {
-            background: linear-gradient(135deg, var(--success-color), #218838);
-            border: none;
-        }
-
-        .btn-outline-primary {
-            border-width: 2px;
-        }
-
-        .progress {
-            height: 8px;
-            border-radius: 4px;
-            margin-bottom: 2rem;
-            background-color: var(--light-bg);
-        }
-
-        .progress-bar {
-            background: linear-gradient(135deg, var(--primary-color), #005a9e);
-            transition: width 0.3s ease;
-        }
-
-        #timer {
-            font-size: 2rem;
-            font-weight: 600;
+        .question-button.active {
+            background-color: var(--primary-color);
             color: white;
+            border-color: var(--primary-color);
         }
 
-        .alert {
+        .question-button.answered {
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        /* Main Content */
+        .test-content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .question-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .question-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .nav-button {
+            display: flex;
+            align-items: center;
+            padding: 8px 16px;
+            background-color: white;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.875rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .nav-button:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .nav-button i {
+            margin-right: 8px;
+        }
+
+        .nav-button i.right {
+            margin-right: 0;
+            margin-left: 8px;
+        }
+
+        /* Question */
+        .question-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-number {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .question-text {
+            font-size: 1.125rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        /* Options */
+        .option-container {
+            margin-bottom: 12px;
+        }
+
+        .option-label {
+            display: flex;
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option-label:hover {
+            border-color: var(--primary-color);
+        }
+
+        .option-label.selected {
+            background-color: var(--primary-light);
+            border-color: var(--primary-color);
+        }
+
+        .option-radio {
+            margin-right: 12px;
+        }
+
+        /* Submit Button */
+        .submit-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .submit-button {
+            padding: 10px 24px;
+            background-color: var(--primary-color);
+            color: white;
             border: none;
             border-radius: 8px;
-            padding: 1rem 1.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .alert-success {
-            background: linear-gradient(135deg, #d4edda, #c3e6cb);
-            color: #155724;
-        }
-
-        .alert-danger {
-            background: linear-gradient(135deg, #f8d7da, #f5c6cb);
-            color: #721c24;
-        }
-
-        .alert-warning {
-            background: linear-gradient(135deg, #fff3cd, #ffeeba);
-            color: #856404;
-        }
-
-        .form-check {
-            margin-bottom: 1rem;
-        }
-
-        .form-check-input {
-            width: 1.2rem;
-            height: 1.2rem;
-            margin-top: 0.2rem;
-        }
-
-        .form-check-label {
-            padding-left: 0.5rem;
             font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
         }
 
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--light-bg);
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--text-secondary);
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--text-primary);
+        .submit-button:hover {
+            background-color: var(--primary-hover);
         }
     </style>
 }
 
-<div class="container mt-4">
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header bg-primary text-white">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h2 class="mb-0">@Model.Title</h2>
-                            <small>Duration: @Model.DurationMinutes minutes</small>
-                        </div>
-                        <div class="text-end">
-                            <div id="timer" class="h4 mb-0"></div>
-                            <small>Time Remaining</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="progress mb-4">
-                        <div id="progressBar" class="progress-bar" role="progressbar" style="width: 0%"></div>
-                    </div>
-                    
-                    <form id="testForm">
-                        @Html.AntiForgeryToken()
-                        <!-- Test Sections Navigation -->
-                        <ul class="nav nav-pills mb-4" id="testSections" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="mcq-tab" data-bs-toggle="pill" data-bs-target="#mcq" type="button" role="tab">
-                                    MCQ Section <span class="badge bg-secondary ms-2">@mcqQuestions.Count Questions</span>
+<div class="test-header">
+    <a href="@Url.Action("Index", "Test")" class="back-button">
+        <i class="fas fa-arrow-left"></i>
+    </a>
+    <span class="header-title">@Model.Title</span>
+</div>
+
+<div class="test-container">
+    <div class="test-sidebar">
+        <div class="sidebar-section">
+            <div class="timer-container">
+                <div id="timer" class="timer-display">00:15:30</div>
+                <div class="timer-label">Time Remaining</div>
+            </div>
+        </div>
+        
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Questions</div>
+            <div class="questions-nav">
+                @for (int i = 1; i <= totalQuestions; i++)
+                {
+                    <button type="button" class="question-button @(i == 1 ? "active" : "")" data-question-index="@(i-1)">@i</button>
+                }
+            </div>
+        </div>
+    </div>
+    
+    <div class="test-content">
+        <form id="testForm">
+            @Html.AntiForgeryToken()
+            
+            <div id="questionsContainer" class="question-container">
+                @for (int i = 0; i < mcqQuestions.Count; i++)
+                {
+                    var question = mcqQuestions[i];
+                    <div class="question-content @(i == 0 ? "" : "d-none")" data-question-id="@question.Id" data-question-index="@i">
+                        <div class="question-navigation">
+                            @if (i > 0)
+                            {
+                                <button type="button" class="nav-button prev-question">
+                                    <i class="fas fa-arrow-left"></i> Previous
                                 </button>
-                            </li>
-                            @if (codingQuestions.Count > 0)
-                            {
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="coding-tab" data-bs-toggle="pill" data-bs-target="#coding" type="button" role="tab">
-                                        Coding Section <span class="badge bg-secondary ms-2">@codingQuestions.Count Questions</span>
-                                    </button>
-                                </li>
                             }
-                        </ul>
-
-                        <!-- Tab Content -->
-                        <div class="tab-content" id="testSectionsContent">
-                            <!-- MCQ Section -->
-                            <div class="tab-pane fade show active" id="mcq" role="tabpanel">
-                                <div id="mcqContainer">
-                                    @for (int i = 0; i < mcqQuestions.Count; i++)
-                                    {
-                                        var question = mcqQuestions[i];
-                                        <div class="question-section mb-4 @(i == 0 ? "" : "d-none")" data-question-id="@question.Id">
-                                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                                <h5>MCQ Question @(i + 1) of @mcqQuestions.Count</h5>
-                                                <div class="question-navigation">
-                                                    @if (i > 0)
-                                                    {
-                                                        <button type="button" class="btn btn-outline-primary btn-sm me-2 prev-question">
-                                                            <i class="fas fa-arrow-left"></i> Previous
-                                                        </button>
-                                                    }
-                                                    @if (i < mcqQuestions.Count - 1)
-                                                    {
-                                                        <button type="button" class="btn btn-outline-primary btn-sm next-question">
-                                                            Next <i class="fas fa-arrow-right"></i>
-                                                        </button>
-                                                    }
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="question-content">
-                                                <p class="lead">@question.Text</p>
-                                                <div class="answer-options">
-                                                    @foreach (var option in question.AnswerOptions)
-                                                    {
-                                                        <div class="form-check mb-2">
-                                                            <input class="form-check-input" type="radio" 
-                                                                   name="question_@question.Id" 
-                                                                   value="@option.Id" 
-                                                                   id="option_@option.Id">
-                                                            <label class="form-check-label" for="option_@option.Id">
-                                                                @option.Text
-                                                            </label>
-                                                        </div>
-                                                    }
-                                                </div>
-                                            </div>
-                                        </div>
-                                    }
-                                    <div class="text-end mt-4">
-                                        <button type="button" class="btn btn-success btn-lg" id="completeMcqBtn">
-                                            <i class="fas fa-check"></i> Complete MCQ Section
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Coding Section -->
-                            @if (codingQuestions.Count > 0)
+                            else
                             {
-                                <div class="tab-pane fade" id="coding" role="tabpanel">
-                                    <div id="codingContainer">
-                                        @for (int i = 0; i < codingQuestions.Count; i++)
-                                        {
-                                            var question = codingQuestions[i];
-                                            var starterCode = question.StarterCode != null && question.StarterCode.ContainsKey("java") 
-                                                ? question.StarterCode["java"] 
-                                                : "// Write your code here\n";
-                                                
-                                            <div class="question-section mb-4 @(i == 0 ? "" : "d-none")" 
-                                                 data-question-id="@question.Id"
-                                                 data-starter-code="@starterCode">
-                                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                                    <h5>Coding Question @(i + 1) of @codingQuestions.Count</h5>
-                                                    <div class="question-navigation">
-                                                        @if (i > 0)
-                                                        {
-                                                            <button type="button" class="btn btn-outline-primary btn-sm me-2 prev-question">
-                                                                <i class="fas fa-arrow-left"></i> Previous
-                                                            </button>
-                                                        }
-                                                        @if (i < codingQuestions.Count - 1)
-                                                        {
-                                                            <button type="button" class="btn btn-outline-primary btn-sm next-question">
-                                                                Next <i class="fas fa-arrow-right"></i>
-                                                            </button>
-                                                        }
-                                                    </div>
-                                                </div>
-                                                
-                                                <div class="question-content">
-                                                    <div class="row">
-                                                        <!-- Left Column - Question Details -->
-                                                        <div class="col-md-4">
-                                                            <div class="card mb-3">
-                                                                <div class="card-header bg-light">
-                                                                    <h6 class="mb-0">Problem Description</h6>
-                                                                </div>
-                                                                <div class="card-body">
-                                                                    <p class="lead">@question.Text</p>
-                                                                </div>
-                                                            </div>
-                                                            
-                                                            @if (question.Parameters?.Any() == true)
-                                                            {
-                                                                <div class="card mb-3">
-                                                                    <div class="card-header bg-light">
-                                                                        <h6 class="mb-0">Parameters</h6>
-                                                                    </div>
-                                                                    <div class="card-body">
-                                                                        <ul class="list-unstyled mb-0">
-                                                                            @foreach (var param in question.Parameters)
-                                                                            {
-                                                                                <li class="mb-2">
-                                                                                    <strong>@param.Name</strong> (@param.Type)
-                                                                                    <p class="text-muted mb-0">@param.Description</p>
-                                                                                </li>
-                                                                            }
-                                                                        </ul>
-                                                                    </div>
-                                                                </div>
-                                                            }
-                                                            
-                                                            @if (!string.IsNullOrEmpty(question.ReturnType))
-                                                            {
-                                                                <div class="card mb-3">
-                                                                    <div class="card-header bg-light">
-                                                                        <h6 class="mb-0">Return Type</h6>
-                                                                    </div>
-                                                                    <div class="card-body">
-                                                                        <p class="mb-0">
-                                                                            <strong>@question.ReturnType</strong>
-                                                                            @if (!string.IsNullOrEmpty(question.ReturnDescription))
-                                                                            {
-                                                                                <span class="text-muted">- @question.ReturnDescription</span>
-                                                                            }
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                            }
-                                                            
-                                                            @if (question.Constraints?.Any() == true)
-                                                            {
-                                                                <div class="card mb-3">
-                                                                    <div class="card-header bg-light">
-                                                                        <h6 class="mb-0">Constraints</h6>
-                                                                    </div>
-                                                                    <div class="card-body">
-                                                                        <ul class="mb-0">
-                                                                            @foreach (var constraint in question.Constraints)
-                                                                            {
-                                                                                <li>@constraint</li>
-                                                                            }
-                                                                        </ul>
-                                                                    </div>
-                                                                </div>
-                                                            }
-                                                        </div>
-
-                                                        <!-- Right Column - Code Editor and Test Cases -->
-                                                        <div class="col-md-8">
-                                                            <div class="code-editor-wrapper mb-4">
-                                                                <div class="editor-container" id="editor_@question.Id"></div>
-                                                                <div class="editor-toolbar">
-                                                                    <select class="language-select form-select" data-question-id="@question.Id">
-                                                                        <option value="java">Java</option>
-                                                                        <option value="python">Python</option>
-                                                                        <option value="c">C</option>
-                                                                        <option value="cpp">C++</option>
-                                                                        <option value="csharp">C#</option>
-                                                                        <option value="javascript">JavaScript</option>
-                                                                    </select>
-                                                                    <button type="button" class="run-code-btn" data-question-id="@question.Id">
-                                                                        <i class="fas fa-play"></i> Run Code
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                            <input type="hidden" name="question_@question.Id" class="coding-answer" required>
-
-                                                            <div class="test-case-panel">
-                                                                <div class="test-case-header">
-                                                                    <h6 class="mb-0">Test Cases</h6>
-                                                                    <span class="badge bg-secondary">@question.TestCases.Count</span>
-                                                                </div>
-                                                                <div class="test-case-content">
-                                                                    <div class="test-cases" id="testCases_@question.Id">
-                                                                        @foreach (var testCase in question.TestCases)
-                                                                        {
-                                                                            <div class="test-case">
-                                                                                <div class="mb-2">
-                                                                                    <strong>Input:</strong>
-                                                                                    <pre><code>@testCase.Input</code></pre>
-                                                                                </div>
-                                                                                <div>
-                                                                                    <strong>Expected Output:</strong>
-                                                                                    <pre><code>@testCase.ExpectedOutput</code></pre>
-                                                                                </div>
-                                                                                @if (!string.IsNullOrEmpty(testCase.Explanation))
-                                                                                {
-                                                                                    <div class="mt-2">
-                                                                                        <strong>Explanation:</strong>
-                                                                                        <p class="mb-0 text-muted">@testCase.Explanation</p>
-                                                                                    </div>
-                                                                                }
-                                                                            </div>
-                                                                        }
-                                                                    </div>
-                                                                    <div class="test-case-result d-none" id="result_@question.Id">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        }
-                                        <div class="text-end mt-4">
-                                            <button type="button" class="btn btn-success btn-lg" id="completeCodingBtn">
-                                                <i class="fas fa-check"></i> Complete Coding Section
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
+                                <div></div>
+                            }
+                            
+                            @if (i < mcqQuestions.Count - 1)
+                            {
+                                <button type="button" class="nav-button next-question">
+                                    Next <i class="fas fa-arrow-right right"></i>
+                                </button>
+                            }
+                            else
+                            {
+                                <button type="submit" class="submit-button">
+                                    Submit Answers
+                                </button>
                             }
                         </div>
                         
-                        <!-- Main Submit Button (Initially Hidden) -->
-                        <div class="text-center mt-4 d-none" id="mainSubmitContainer">
-                            <div class="alert alert-success">
-                                <h4 class="alert-heading"><i class="fas fa-check-circle"></i> Section Completed!</h4>
-                                <p>You have completed the MCQ section. You can now submit your test.</p>
+                        <div class="question-card">
+                            <div class="question-number">Question @(i + 1)</div>
+                            <div class="question-text">@question.Text</div>
+                            
+                            <div class="options-container">
+                                @foreach (var option in question.AnswerOptions)
+                                {
+                                    <div class="option-container">
+                                        <label class="option-label" for="option_@option.Id">
+                                            <input class="option-radio" type="radio" 
+                                                   name="question_@question.Id" 
+                                                   value="@option.Id" 
+                                                   id="option_@option.Id">
+                                            @option.Text
+                                        </label>
+                                    </div>
+                                }
                             </div>
-                            <button type="submit" class="btn btn-primary btn-lg">
-                                <i class="fas fa-paper-plane"></i> Submit Test
-                            </button>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                }
             </div>
-        </div>
+        </form>
     </div>
 </div>
 
 @section Scripts {
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/loader.min.js"></script>
     <script>
-        require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs' }});
-        require(['vs/editor/editor.main'], function() {
-            // Initialize Monaco editors for each coding question
-            document.querySelectorAll('.editor-container').forEach(container => {
-                const questionId = container.id.split('_')[1];
-                const questionElement = container.closest('.question-section');
-                const starterCode = questionElement.dataset.starterCode || '// Write your code here\n';
-                const languageSelect = document.querySelector(`.language-select[data-question-id="${questionId}"]`);
-                
-                const editor = monaco.editor.create(container, {
-                    value: starterCode,
-                    language: languageSelect.value,
-                    theme: 'vs-dark',
-                    automaticLayout: true,
-                    minimap: {
-                        enabled: false
-                    },
-                    scrollBeyondLastLine: false,
-                    fontSize: 14,
-                    lineNumbers: 'on',
-                    roundedSelection: false,
-                    scrollbar: {
-                        vertical: 'visible',
-                        horizontal: 'visible',
-                        useShadows: false,
-                        verticalScrollbarSize: 10,
-                        horizontalScrollbarSize: 10
-                    }
-                });
-
-                // Handle language change
-                languageSelect.addEventListener('change', function() {
-                    const language = this.value;
-                    monaco.editor.setModelLanguage(editor.getModel(), language);
-                });
-
-                // Update hidden input when code changes
-                editor.onDidChangeModelContent(() => {
-                    const code = editor.getValue();
-                    document.querySelector(`input[name="question_${questionId}"]`).value = code;
-                });
-
-                // Store editor instance
-                container.editor = editor;
-            });
-
-            // Handle Run Code button clicks
-            document.querySelectorAll('.run-code-btn').forEach(button => {
-                button.addEventListener('click', async function() {
-                    const questionId = this.dataset.questionId;
-                    const editor = document.querySelector(`#editor_${questionId}`).editor;
-                    const languageSelect = document.querySelector(`.language-select[data-question-id="${questionId}"]`);
-                    const code = editor.getValue();
-                    const resultDiv = document.querySelector(`#result_${questionId}`);
-
-                    // Show loading state
-                    this.disabled = true;
-                    resultDiv.innerHTML = '<div class="text-center"><i class="fas fa-spinner fa-spin"></i> Running tests...</div>';
-                    resultDiv.classList.remove('d-none', 'result-success', 'result-error');
-
-                    try {
-                        const response = await fetch('/api/code/run', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({
-                                code: code,
-                                questionId: questionId,
-                                language: languageSelect.value,
-                                testCases: Array.from(document.querySelectorAll(`#testCases_${questionId} .test-case`)).map(testCase => {
-                                    const input = testCase.querySelector('pre code').textContent.trim();
-                                    const expectedOutput = testCase.querySelectorAll('pre code')[1].textContent.trim();
-                                    return {
-                                        input: input,
-                                        expectedOutput: expectedOutput
-                                    };
-                                })
-                            })
-                        });
-
-                        const result = await response.json();
-                        
-                        if (result.success) {
-                            resultDiv.innerHTML = `
-                                <div>
-                                    <h6 class="mb-2">Test Results:</h6>
-                                    <div class="mb-2">
-                                        <strong>Status:</strong> Passed ${result.passedTests} of ${result.totalTests} tests
-                                    </div>
-                                    <div class="mb-2">
-                                        <strong>Runtime:</strong> ${result.totalExecutionTime}ms
-                                    </div>
-                                    ${result.testResults.map((test, index) => `
-                                        <div class="test-case-result ${test.passed ? 'result-success' : 'result-error'} mb-2">
-                                            <div class="mb-1">
-                                                <strong>Test Case ${index + 1}:</strong>
-                                                ${test.passed ? 'Passed' : 'Failed'}
-                                            </div>
-                                            <div class="mb-1">
-                                                <strong>Input:</strong>
-                                                <pre class="mb-0"><code>${test.input}</code></pre>
-                                            </div>
-                                            <div class="mb-1">
-                                                <strong>Expected Output:</strong>
-                                                <pre class="mb-0"><code>${test.expectedOutput}</code></pre>
-                                            </div>
-                                            <div class="mb-1">
-                                                <strong>Actual Output:</strong>
-                                                <pre class="mb-0"><code>${test.actualOutput || 'No output'}</code></pre>
-                                            </div>
-                                            ${test.error ? `
-                                                <div>
-                                                    <strong>Error:</strong>
-                                                    <pre class="mb-0"><code>${test.error}</code></pre>
-                                                </div>
-                                            ` : ''}
-                                        </div>
-                                    `).join('')}
-                                </div>`;
-                            resultDiv.classList.add(result.success ? 'result-success' : 'result-error');
-                        } else {
-                            resultDiv.innerHTML = `
-                                <div>
-                                    <h6 class="mb-2">Test Results:</h6>
-                                    <div class="mb-2">
-                                        <strong>Status:</strong> Failed
-                                    </div>
-                                    <div>
-                                        <strong>Error:</strong>
-                                        <pre class="mt-2 mb-0"><code>${result.compilationError || 'Unknown error'}</code></pre>
-                                    </div>
-                                </div>`;
-                            resultDiv.classList.add('result-error');
-                        }
-                    } catch (error) {
-                        resultDiv.innerHTML = `
-                            <div>
-                                <h6 class="mb-2">Error:</h6>
-                                <div>Failed to run code. Please try again.</div>
-                            </div>`;
-                        resultDiv.classList.add('result-error');
-                    }
-
-                    resultDiv.classList.remove('d-none');
-                    this.disabled = false;
-                });
-            });
-        });
-
         document.addEventListener('DOMContentLoaded', function() {
             const testForm = document.getElementById('testForm');
-            const mcqContainer = document.getElementById('mcqContainer');
-            const codingContainer = document.getElementById('codingContainer');
-            const progressBar = document.getElementById('progressBar');
             const timerElement = document.getElementById('timer');
-            const completeMcqBtn = document.getElementById('completeMcqBtn');
-            const completeCodingBtn = document.getElementById('completeCodingBtn');
-            const mainSubmitContainer = document.getElementById('mainSubmitContainer');
+            const questionButtons = document.querySelectorAll('.question-button');
+            const questionContents = document.querySelectorAll('.question-content');
             
             let timeLeft = @Model.DurationMinutes * 60; // Convert minutes to seconds
-            let mcqCompleted = false;
-            let codingCompleted = @(codingQuestions.Count > 0 ? "false" : "true"); // Set to true if no coding questions
-            let warningShown = false;
-            let finalWarningShown = false;
             
             // Initialize timer
             updateTimer();
             const timerInterval = setInterval(updateTimer, 1000);
             
-            // Handle MCQ section completion
-            completeMcqBtn.addEventListener('click', function() {
-                const mcqTab = document.getElementById('mcq-tab');
-                const codingTab = document.getElementById('coding-tab');
-                
-                // Allow proceeding even if not all questions are answered
-                mcqCompleted = true;
-                mcqTab.classList.add('completed');
-                
-                // Only switch to coding section if it exists
-                if (codingTab) {
-                    codingTab.click();
-                } else {
-                    // If no coding section, show submit button
-                    mainSubmitContainer.classList.remove('d-none');
+            // Timer function
+            function updateTimer() {
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitTest();
+                    return;
                 }
-                checkSectionsCompletion();
+                
+                const hours = Math.floor(timeLeft / 3600);
+                const minutes = Math.floor((timeLeft % 3600) / 60);
+                const seconds = timeLeft % 60;
+                
+                timerElement.textContent = 
+                    `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                // Add warning class when less than 5 minutes remaining
+                if (timeLeft <= 300) {
+                    timerElement.classList.add('text-danger');
+                }
+                
+                timeLeft--;
+            }
+            
+            // Handle question navigation
+            questionButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const questionIndex = parseInt(this.getAttribute('data-question-index'));
+                    showQuestion(questionIndex);
+                });
             });
             
-            // Handle Coding section completion
-            if (completeCodingBtn) {
-                completeCodingBtn.addEventListener('click', function() {
-                    // Allow proceeding even if not all questions are answered
-                    codingCompleted = true;
-                    document.getElementById('coding-tab').classList.add('completed');
-                    checkSectionsCompletion();
+            function showQuestion(index) {
+                // Hide all questions
+                questionContents.forEach(content => {
+                    content.classList.add('d-none');
                 });
+                
+                // Show selected question
+                questionContents[index].classList.remove('d-none');
+                
+                // Update active button
+                questionButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                questionButtons[index].classList.add('active');
             }
             
-            // Check if both sections are completed
-            function checkSectionsCompletion() {
-                if (mcqCompleted && codingCompleted) {
-                    mainSubmitContainer.classList.remove('d-none');
-                    if (completeMcqBtn) completeMcqBtn.disabled = true;
-                    if (completeCodingBtn) completeCodingBtn.disabled = true;
-                }
-            }
+            // Handle prev/next buttons
+            document.querySelectorAll('.next-question').forEach(button => {
+                button.addEventListener('click', function() {
+                    const currentQuestion = document.querySelector('.question-content:not(.d-none)');
+                    const currentIndex = parseInt(currentQuestion.getAttribute('data-question-index'));
+                    showQuestion(currentIndex + 1);
+                });
+            });
+            
+            document.querySelectorAll('.prev-question').forEach(button => {
+                button.addEventListener('click', function() {
+                    const currentQuestion = document.querySelector('.question-content:not(.d-none)');
+                    const currentIndex = parseInt(currentQuestion.getAttribute('data-question-index'));
+                    showQuestion(currentIndex - 1);
+                });
+            });
+            
+            // Mark questions as answered when an option is selected
+            document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    const questionContent = this.closest('.question-content');
+                    const questionIndex = parseInt(questionContent.getAttribute('data-question-index'));
+                    questionButtons[questionIndex].classList.add('answered');
+                    
+                    // Mark label as selected
+                    const labels = questionContent.querySelectorAll('.option-label');
+                    labels.forEach(label => {
+                        label.classList.remove('selected');
+                    });
+                    this.closest('.option-label').classList.add('selected');
+                });
+            });
             
             // Handle form submission
             testForm.addEventListener('submit', function(e) {
@@ -859,7 +459,7 @@
                 document.body.appendChild(confirmModal);
                 const modal = new bootstrap.Modal(confirmModal);
                 modal.show();
-
+                
                 confirmModal.querySelector('#confirmSubmit').addEventListener('click', function() {
                     modal.hide();
                     
@@ -874,23 +474,12 @@
                         }
                     });
                     
-                    // Collect coding answers
-                    const codingAnswers = document.querySelectorAll('.coding-answer');
-                    codingAnswers.forEach(textarea => {
-                        if (textarea.value.trim()) {
-                            answers[`question_${textarea.dataset.questionId}`] = textarea.value;
-                        }
-                    });
-                    
                     // Get the anti-forgery token
                     const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
                     if (!token) {
                         showToast('Security token not found. Please refresh the page and try again.', 'error');
                         return;
                     }
-                    
-                    console.log('Submitting test with token:', token);
-                    console.log('Answers:', answers);
                     
                     // Submit the test
                     fetch(`/Test/Submit/${@Model.Id}`, {
@@ -922,65 +511,13 @@
                         showToast('Error submitting test: ' + error.message, 'error');
                     });
                 });
-
+                
                 confirmModal.addEventListener('hidden.bs.modal', function () {
                     document.body.removeChild(confirmModal);
                 });
             });
             
-            // Timer function
-            function updateTimer() {
-                if (timeLeft <= 0) {
-                    clearInterval(timerInterval);
-                    submitTest();
-                    return;
-                }
-                
-                // Show warning when 5 minutes remaining
-                if (timeLeft === 300 && !warningShown) {
-                    warningShown = true;
-                    showTimeWarning('5 minutes remaining!');
-                }
-                
-                // Show final warning when 1 minute remaining
-                if (timeLeft === 60 && !finalWarningShown) {
-                    finalWarningShown = true;
-                    showTimeWarning('1 minute remaining!', true);
-                }
-                
-                const minutes = Math.floor(timeLeft / 60);
-                const seconds = timeLeft % 60;
-                timerElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-                
-                // Add warning class when less than 5 minutes remaining
-                if (timeLeft <= 300) {
-                    timerElement.classList.add('text-danger');
-                }
-                
-                timeLeft--;
-            }
-            
-            function showTimeWarning(message, isFinal = false) {
-                const warningDiv = document.createElement('div');
-                warningDiv.className = `alert ${isFinal ? 'alert-danger' : 'alert-warning'} alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x mt-3`;
-                warningDiv.style.zIndex = '9999';
-                warningDiv.innerHTML = `
-                    <strong>${message}</strong>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                `;
-                document.body.appendChild(warningDiv);
-                
-                // Auto-dismiss after 5 seconds
-                setTimeout(() => {
-                    warningDiv.remove();
-                }, 5000);
-            }
-            
             function submitTest() {
-                // Mark sections as completed to allow submission
-                mcqCompleted = true;
-                codingCompleted = true;
-                
                 // Show submission message
                 const submitMessage = document.createElement('div');
                 submitMessage.className = 'alert alert-info alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x mt-3';
@@ -995,46 +532,31 @@
                 testForm.dispatchEvent(new Event('submit'));
             }
             
-            // Handle question navigation within sections
-            document.querySelectorAll('.next-question, .prev-question').forEach(button => {
-                button.addEventListener('click', function() {
-                    const currentSection = this.closest('.tab-pane');
-                    const currentQuestion = currentSection.querySelector('.question-section:not(.d-none)');
-                    const questions = Array.from(currentSection.querySelectorAll('.question-section'));
-                    const currentIndex = questions.indexOf(currentQuestion);
-                    
-                    if (this.classList.contains('next-question') && currentIndex < questions.length - 1) {
-                        currentQuestion.classList.add('d-none');
-                        questions[currentIndex + 1].classList.remove('d-none');
-                    } else if (this.classList.contains('prev-question') && currentIndex > 0) {
-                        currentQuestion.classList.add('d-none');
-                        questions[currentIndex - 1].classList.remove('d-none');
-                    }
+            // Helper functions for toast notifications
+            function showToast(message, type = 'info') {
+                const toast = document.createElement('div');
+                toast.className = `toast align-items-center text-white bg-${type === 'success' ? 'success' : type === 'error' ? 'danger' : 'info'} position-fixed end-0 m-3`;
+                toast.style.top = '70px'; // Position below navbar
+                toast.setAttribute('role', 'alert');
+                toast.setAttribute('aria-live', 'assertive');
+                toast.setAttribute('aria-atomic', 'true');
+                toast.innerHTML = `
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            ${message}
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                `;
+                document.body.appendChild(toast);
+                
+                const bsToast = new bootstrap.Toast(toast, { delay: 5000 });
+                bsToast.show();
+                
+                toast.addEventListener('hidden.bs.toast', function() {
+                    document.body.removeChild(toast);
                 });
-            });
+            }
         });
     </script>
-    
-    <style>
-        .nav-link.completed {
-            background-color: #28a745 !important;
-            color: white !important;
-        }
-        
-        .score-circle {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            background-color: #f8f9fa;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 10px solid #28a745;
-        }
-        
-        .coding-answer {
-            font-family: monospace;
-            resize: vertical;
-        }
-    </style>
 } 
